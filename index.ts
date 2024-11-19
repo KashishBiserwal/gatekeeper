@@ -7,7 +7,7 @@ import authRouter from "./routes/auth.routes"
 import middleware from "./utils/middleware"
 import { User } from "./models/user";
 import userRouter from "./routes/user.routes";
-// import adminRouter from "./routes/admin.routes";
+import adminRouter from "./routes/admin.routes";
 dotenv.config()
 
 const app = express()
@@ -25,7 +25,7 @@ app.use('/auth', authRouter)
 //@ts-ignore
 app.use('/user', middleware.AuthMiddleware, userRouter)
 //@ts-ignore
-// app.use('/admin', adminRouter)
+app.use('/admin', middleware.AuthMiddleware, adminRouter)
 
 export const getUserToken = async (userId: any) => {
     console.log('Getting user token:', userId);

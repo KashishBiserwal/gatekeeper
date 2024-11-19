@@ -5,6 +5,7 @@ const UserSchema = new Schema({
     phone: {type: String, required: true},
     password: {type: String, required: true},
     role: {type: String, default: 'user'},
+    isActive: {type: Boolean, default: true},
 })
 
 export const User = models.User || model('User', UserSchema)
