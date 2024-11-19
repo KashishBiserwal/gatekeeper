@@ -8,5 +8,6 @@ const UserSchema = new mongoose_1.Schema({
     password: { type: String, required: true },
     role: { type: String, default: 'user' },
     isActive: { type: Boolean, default: true },
+    employeeId: { type: String, required: false },
 });
 exports.User = mongoose_1.models.User || (0, mongoose_1.model)('User', UserSchema);

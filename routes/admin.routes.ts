@@ -7,10 +7,7 @@ const adminRouter = Router()
 adminRouter.get('/users', adminController.getAllUsers)
 
 //@ts-ignore
-adminRouter.put('/deactivate/:userId', adminController.deactivateUser)
-
-//@ts-ignore
-adminRouter.put('/activate/:userId', adminController.activateUser)
+adminRouter.put('/switch/:userId', adminController.switchUser)
 
 
 export default adminRouter

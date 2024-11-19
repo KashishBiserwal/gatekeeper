@@ -9,6 +9,23 @@ userRouter.post('/material', userController.addMaterial)
 userRouter.post('/stone', userController.addStone)
 //@ts-ignore
 userRouter.post('/extra', userController.addExtra)
-
+//@ts-ignore
+userRouter.get('/materials', userController.getMaterial)
+//@ts-ignore
+userRouter.get('/stones', userController.getStone)
+//@ts-ignore
+userRouter.get('/extras', userController.getExtra)
+//@ts-ignore
+userRouter.get('/material/:materialId', userController.getMaterialById)
+//@ts-ignore
+userRouter.get('/stone/:stoneId', userController.getStoneById)
+//@ts-ignore
+userRouter.get('/extra/:extraId', userController.getExtraById)
+//@ts-ignore
+userRouter.put('/material/:materialId', userController.editMaterialById)
+//@ts-ignore
+userRouter.put('/stone/:stoneId', userController.editStoneById)
+//@ts-ignore
+userRouter.put('/extra/:extraId', userController.editExtraById)
 
 export default userRouter

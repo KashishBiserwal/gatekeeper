@@ -11,22 +11,23 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     if(!isValidPayload){
         return res.status(400).send({error: 'Invalid payload', error_message: 'name, phone, password are required'})
     }
-    const {name, phone, password} = req.body
+    const {name, phone, password, employeeId} = req.body
     try{
         const existingUser = await User.findOne({phone})
         if(existingUser){
-            return res.status(400).send({valid: false, message: 'User already exists'})
+            return res.status(400).send({status: 400, message: 'User already exists'})
         }
         const hashedPassword = await bcrypt.hash(password, 10)
         await User.create({
             name,
             phone,
             password: hashedPassword,
+            employeeId
         })
         const token = jwt.sign({phone: req.body.phone}, process.env.JWT_SECRET!, {
             expiresIn: '7d'
         })
-        return res.status(200).send({valid: true, message: 'User created successfully', token})
+        return res.status(200).send({status: 200, message: 'User created successfully', token})
     }catch(err){
         return res.status(500).send({message: 'Error creating user'})
     }
@@ -43,7 +44,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         if(!user) return res.status(400).send({message: "User doesn't exist"})
         const isCorrectPassword = bcrypt.compareSync(password, user.password)
         if(! isCorrectPassword){
-            return res.status(400).send({valid: false, message: "Incorrect Password"})
+            return res.status(400).send({status: 400, message: "Incorrect Password"})
         }
         const token = jwt.sign({phone: user.phone}, process.env.JWT_SECRET!, {
             expiresIn: '7d'
@@ -59,7 +60,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
                 body: `Welcome to Frek App, ${user.name}!`
             };
         }
-        return res.status(200).send({valid: true, message: "Logged in successfully", user, token})
+        return res.status(200).send({status: 200, message: "Logged in successfully", user, token})
     }catch(err){
         return res.status(500).send({error: 'Error while Login'})
     }
@@ -73,16 +74,16 @@ const updatePassword = async (req: ExtendedRequest, res: Response, next: NextFun
     const {oldPassword, newPassword} = req.body
     const user = req.user
     try{
-        if(!user) return res.status(400).send({message: 'User not found'})
+        if(!user) return res.status(400).send({status: 400, message: 'User not found'})
         const isCorrectPassword = bcrypt.compareSync(oldPassword, user.password)
         if(!isCorrectPassword){
             return res.status(400).send({message: 'Incorrect old password'})
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10)
         await User.findByIdAndUpdate(user._id, {password: hashedPassword})
-        return res.status(200).send({message: 'Password updated successfully'})
+        return res.status(200).send({status: 200, message: 'Password updated successfully'})
     }catch(err){
-        return res.status(500).send({message: 'Error updating password'})
+        return res.status(500).send({status: 500, message: 'Error updating password'})
     }
 }
 
@@ -99,7 +100,7 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
         // Find the user by phone
         const user = await User.findOne({ phone });
         if (!user) {
-            return res.status(404).send({ message: 'User not found' });
+            return res.status(404).send({status: 400, message: 'User not found' });
         }
 
         // Hash the new password
@@ -108,9 +109,9 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
         // Update the user's password and last_seen timestamp
         await User.findByIdAndUpdate(user._id, { password: hashedPassword});
 
-        return res.status(200).send({ message: 'Password reset successfully' });
+        return res.status(200).send({ status: 200, message: 'Password reset successfully' });
     } catch (err) {
-        return res.status(500).send({ message: 'Error resetting password' });
+        return res.status(500).send({ status: 500, message: 'Error resetting password' });
     }
 };
 

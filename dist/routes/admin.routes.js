@@ -9,7 +9,5 @@ const adminRouter = (0, express_1.Router)();
 //@ts-ignore
 adminRouter.get('/users', admin_controller_1.default.getAllUsers);
 //@ts-ignore
-adminRouter.put('/deactivate/:userId', admin_controller_1.default.deactivateUser);
-//@ts-ignore
-adminRouter.put('/activate/:userId', admin_controller_1.default.activateUser);
+adminRouter.put('/switch/:userId', admin_controller_1.default.switchUser);
 exports.default = adminRouter;
