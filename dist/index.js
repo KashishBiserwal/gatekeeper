@@ -17,19 +17,19 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.get('/ping', (req, res) => {
-    return res.status(200).send({ message: 'pong' });
+app.get("/ping", (req, res) => {
+    return res.status(200).send({ message: "pong" });
 });
-app.get('/', (req, res) => res.send('Server running...'));
-app.use('/auth', auth_routes_1.default);
-//@ts-ignore
-app.use('/user', middleware_1.default.AuthMiddleware, user_routes_1.default);
-//@ts-ignore
-app.use('/admin', middleware_1.default.AuthMiddleware, admin_routes_1.default);
+app.get("/", (req, res) => res.send("Server running..."));
+app.use("/auth", auth_routes_1.default);
+// @ts-ignore
+app.use("/user", middleware_1.default.AuthMiddleware, user_routes_1.default);
+// @ts-ignore
+app.use("/admin", middleware_1.default.AuthMiddleware, admin_routes_1.default);
 const getUserToken = async (userId) => {
-    console.log('Getting user token:', userId);
-    const user = await user_1.User.findById(userId).select('registrationToken');
-    console.log('User registration token:', user.registrationToken);
+    console.log("Getting user token:", userId);
+    const user = await user_1.User.findById(userId).select("registrationToken");
+    console.log("User registration token:", user?.registrationToken);
     if (!user)
         return null;
     if (!user.registrationToken)
@@ -37,11 +37,12 @@ const getUserToken = async (userId) => {
     return user.registrationToken;
 };
 exports.getUserToken = getUserToken;
-mongoose_1.default.connect(process.env.MONGO_URI)
-    .then(() => console.log('db connected...'))
+// MongoDB connection
+mongoose_1.default
+    .connect(process.env.MONGO_URI)
+    .then(() => console.log("db connected..."))
     .catch((err) => {
     console.log(err);
 });
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
+// Export app as a handler for Vercel
+exports.default = app;
