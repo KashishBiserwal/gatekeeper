@@ -8,6 +8,22 @@ import { User } from "./models/user";
 import userRouter from "./routes/user.routes";
 import adminRouter from "./routes/admin.routes";
 
+
+let isConnected: boolean = false; 
+
+export const connectToDatabase = async () => {
+  if (isConnected) {
+    console.log("Using existing database connection");
+    return;
+  }
+
+  console.log("Establishing new database connection");
+  await mongoose.connect(process.env.MONGO_URI!);
+  isConnected = true;
+};
+
+connectToDatabase();
+
 dotenv.config();
 
 const app = express();
@@ -37,13 +53,12 @@ export const getUserToken = async (userId: any) => {
   return user.registrationToken;
 };
 
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGO_URI!)
-  .then(() => console.log("db connected..."))
-  .catch((err) => {
-    console.log(err);
-  });
+// // MongoDB connection
+// mongoose
+//   .connect(process.env.MONGO_URI!)
+//   .then(() => console.log("db connected..."))
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
-// Export app as a handler for Vercel
 export default app;

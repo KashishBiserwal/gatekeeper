@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserToken = void 0;
+exports.getUserToken = exports.connectToDatabase = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -13,6 +13,18 @@ const middleware_1 = __importDefault(require("./utils/middleware"));
 const user_1 = require("./models/user");
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
+let isConnected = false;
+const connectToDatabase = async () => {
+    if (isConnected) {
+        console.log("Using existing database connection");
+        return;
+    }
+    console.log("Establishing new database connection");
+    await mongoose_1.default.connect(process.env.MONGO_URI);
+    isConnected = true;
+};
+exports.connectToDatabase = connectToDatabase;
+(0, exports.connectToDatabase)();
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -37,12 +49,11 @@ const getUserToken = async (userId) => {
     return user.registrationToken;
 };
 exports.getUserToken = getUserToken;
-// MongoDB connection
-mongoose_1.default
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log("db connected..."))
-    .catch((err) => {
-    console.log(err);
-});
-// Export app as a handler for Vercel
+// // MongoDB connection
+// mongoose
+//   .connect(process.env.MONGO_URI!)
+//   .then(() => console.log("db connected..."))
+//   .catch((err) => {
+//     console.log(err);
+//   });
 exports.default = app;
