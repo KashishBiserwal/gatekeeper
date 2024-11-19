@@ -55,7 +55,7 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
             final_weight
         } = req.body;
 
-        const addedStone = await Material.create({
+        const addedStone = await Stone.create({
             vehicle_picture,
             weight_picture,
             slip_picture,
@@ -80,7 +80,7 @@ const addExtra = async (req: Request, res: Response, next: NextFunction) => {
             remark,
         } = req.body;
 
-        const addedExtra = await Material.create({
+        const addedExtra = await Extra.create({
             vehicle_picture,
             audio,
             remark,
