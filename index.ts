@@ -18,7 +18,7 @@ export const connectToDatabase = async () => {
   }
 
   console.log("Establishing new database connection");
-  await mongoose.connect(process.env.MONGO_URI!);
+  await mongoose.connect('mongodb+srv://krish:gatekeeper@cluster0.7fby9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
   isConnected = true;
 };
 
