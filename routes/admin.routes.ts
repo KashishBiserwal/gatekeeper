@@ -18,5 +18,6 @@ adminRouter.put('/edit-bill/:id', adminController.editBill)
 
 adminRouter.delete('/delete-bill/:id', adminController.deleteBill)
 
+adminRouter.get('/get-bill/:id', adminController.getBillById)
 
 export default adminRouter

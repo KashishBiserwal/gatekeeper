@@ -131,4 +131,26 @@ const deleteBill = async (req, res, next) => {
         });
     }
 };
-exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill };
+// get by id
+const getBillById = async (req, res, next) => {
+    try {
+        const { id } = req.params; // Extract ID from route parameters
+        // Find the billing record by ID
+        const bill = await billing_1.Billing.findById(id);
+        if (!bill) {
+            return res.status(404).json({ message: "Billing record not found." });
+        }
+        res.status(200).json({
+            message: "Billing record retrieved successfully.",
+            data: bill,
+        });
+    }
+    catch (error) {
+        console.error("Error retrieving billing record:", error);
+        res.status(500).json({
+            message: "An error occurred while retrieving the billing record.",
+            error: error,
+        });
+    }
+};
+exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById };
