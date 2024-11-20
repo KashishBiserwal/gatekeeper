@@ -30,4 +30,7 @@ userRouter.put('/material/:materialId', user_controller_1.default.editMaterialBy
 userRouter.put('/stone/:stoneId', user_controller_1.default.editStoneById);
 //@ts-ignore
 userRouter.put('/extra/:extraId', user_controller_1.default.editExtraById);
+userRouter.delete('/material/:materialId', user_controller_1.default.deleteMaterialById);
+userRouter.delete('/stone/:stoneId', user_controller_1.default.deleteStoneById);
+userRouter.delete('/extra/:extraId', user_controller_1.default.deleteExtraById);
 exports.default = userRouter;

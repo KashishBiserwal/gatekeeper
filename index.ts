@@ -37,6 +37,8 @@ app.get("/ping", (req, res) => {
 
 app.get("/", (req, res) => res.send("Server running..."));
 
+
+
 app.use("/auth", authRouter);
 // @ts-ignore
 app.use("/user", middleware.AuthMiddleware, userRouter);
@@ -61,4 +63,10 @@ export const getUserToken = async (userId: any) => {
 //     console.log(err);
 //   });
 
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
 export default app;
+

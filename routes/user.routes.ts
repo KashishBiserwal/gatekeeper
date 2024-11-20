@@ -28,4 +28,10 @@ userRouter.put('/stone/:stoneId', userController.editStoneById)
 //@ts-ignore
 userRouter.put('/extra/:extraId', userController.editExtraById)
 
+userRouter.delete('/material/:materialId', userController.deleteMaterialById)
+
+userRouter.delete('/stone/:stoneId', userController.deleteStoneById)
+
+userRouter.delete('/extra/:extraId', userController.deleteExtraById)
+
 export default userRouter

@@ -233,5 +233,45 @@ const editExtraById = async (req: Request, res: Response, next: NextFunction) =>
     }
 }
 
-const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById }
+const deleteMaterialById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { materialId } = req.params;
+        const material = await Material.findByIdAndDelete(materialId);
+        if (!material) {
+            return res.status(404).json({status: 404, message: 'Material not found'});
+        }
+        res.status(200).json({status: 200, message: 'Material deleted successfully'});
+    } catch (error) {
+        next(error);
+    }
+}
+
+const deleteStoneById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { stoneId } = req.params;
+        const stone = await Stone.findByIdAndDelete(stoneId);
+        if (!stone) {
+            return res.status(404).json({status: 404, message: 'Stone not found'});
+        }
+        res.status(200).json({status: 200, message: 'Stone deleted successfully'});
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+const deleteExtraById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { extraId } = req.params;
+        const extra = await Extra.findByIdAndDelete(extraId);
+        if (!extra) {
+            return res.status(404).json({status: 404, message: 'Extra not found'});
+        }
+        res.status(200).json({status: 200, message: 'Extra deleted successfully'});
+    } catch (error) {
+        next(error);
+    }
+}
+
+const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById }
 export default userController
