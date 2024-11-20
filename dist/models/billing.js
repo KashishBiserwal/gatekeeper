@@ -7,5 +7,5 @@ const BillingSchema = new mongoose_1.Schema({
     rstno: { type: String, required: false },
     vehicle_number: { type: String, required: false },
     bill_id: { type: String, required: false },
-});
+}, { timestamps: true });
 exports.Billing = mongoose_1.models.Billing || (0, mongoose_1.model)("Billing", BillingSchema);
