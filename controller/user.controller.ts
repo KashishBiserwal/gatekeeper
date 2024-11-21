@@ -276,28 +276,27 @@ const deleteExtraById = async (req: Request, res: Response, next: NextFunction) 
 
 const getAudio = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Ensure the audio file is attached in the request
-        if (!req.file) {
-            return res.status(400).json({ error: 'No audio file provided' });
+        // Check if a file is uploaded
+        if (!req.files || !req.files.audio) {
+            return res.status(400).json({ error: "No audio file provided" });
         }
 
-        // Extract the file path from the uploaded file
-        const filePath = req.file.path;
+        // Extract the uploaded file
+        const audioFile = req.files.audio;
 
-        // Read the file as a binary buffer
-        const audioBuffer = fs.readFileSync(filePath);
+        // Ensure the file is a Buffer
+        if (!audioFile || !(audioFile as any).data) {
+            return res.status(400).json({ error: "Invalid audio file" });
+        }
 
-        // Convert the binary buffer to a Base64 string
-        const base64Audio = audioBuffer.toString('base64');
+        // Convert the file buffer to a Base64 string
+        const base64Audio = (audioFile as any).data.toString("base64");
 
         // Return the Base64 string as a response
         res.status(200).json({ base64Audio });
-
-        // Optionally, remove the file after processing if not needed
-        fs.unlinkSync(filePath);
     } catch (error) {
-        console.error('Error processing audio file:', error);
-        res.status(500).json({ error: 'Failed to process audio file' });
+        console.error("Error processing audio file:", error);
+        res.status(500).json({ error: "Failed to process audio file" });
     }
 };
 

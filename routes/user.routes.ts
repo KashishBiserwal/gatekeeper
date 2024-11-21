@@ -1,11 +1,11 @@
 import { Router } from "express";
 import userController from "../controller/user.controller";
-const multer = require('multer');
+import fileUpload from "express-fileupload";
 
 const userRouter = Router()
-const upload = multer({ dest: 'uploads/' });
+userRouter.use(fileUpload());
 
-userRouter.post('/get-audio', upload.single('audio'), userController.getAudio);
+userRouter.post('/get-audio', userController.getAudio);
 //@ts-ignore
 userRouter.post('/material', userController.addMaterial)
 //@ts-ignore
