@@ -2,9 +2,6 @@ import { Schema, model, models } from "mongoose";
 
 const audioScema = new Schema({
     name: { type: String, required: false },
-    rstno: { type: String, required: false },
-    vehicle_number: { type: String, required: false },
-    bill_id: { type: String, required: false },
 }, { timestamps: true });
 
-export const Billing = models.Billing || model("Billing", BillingSchema);
+export const Audio = models.Audio || model("Audio", audioScema);

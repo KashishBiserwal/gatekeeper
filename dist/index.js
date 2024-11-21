@@ -56,7 +56,7 @@ exports.getUserToken = getUserToken;
 //   .catch((err) => {
 //     console.log(err);
 //   });
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

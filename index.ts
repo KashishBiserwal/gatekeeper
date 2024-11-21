@@ -9,7 +9,7 @@ import userRouter from "./routes/user.routes";
 import adminRouter from "./routes/admin.routes";
 
 
-let isConnected: boolean = false; 
+let isConnected: boolean = false;
 
 export const connectToDatabase = async () => {
   if (isConnected) {
@@ -63,7 +63,7 @@ export const getUserToken = async (userId: any) => {
 //     console.log(err);
 //   });
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
