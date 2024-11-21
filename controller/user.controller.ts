@@ -45,7 +45,7 @@ const getAudio = async (req: Request, res: Response, next: NextFunction) => {
         await (audioFile as any).mv(uploadPath);
 
         // Save the file path to the database (example logic)
-        const audioUrl = `/uploads/${uniqueName}`;
+        const audioUrl = `uploads/${uniqueName}`;
         // Replace with your database save logic
         // await User.create({ audioPath: audioUrl });
 
