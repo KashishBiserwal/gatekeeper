@@ -31,13 +31,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.get("/api/ping", (req, res) => {
+
+app.get("/ping", (req, res) => {
   return res.status(200).send({ message: "pong" });
 });
 
-app.get('/api', (req, res) => {
-  res.json({ message: 'API is working' });
-});
 
 app.get('/', (req, res) => {
   res.send('Hello, world!'); // Just a simple response for testing
