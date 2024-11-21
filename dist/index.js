@@ -31,10 +31,10 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads")));
-app.get("/ping", (req, res) => {
+app.get("/api/ping", (req, res) => {
     return res.status(200).send({ message: "pong" });
 });
-app.get("/", (req, res) => res.send("Server running..."));
+app.get("/api", (req, res) => res.send("Server running..."));
 app.use("/auth", auth_routes_1.default);
 // @ts-ignore
 app.use("/user", middleware_1.default.AuthMiddleware, user_routes_1.default);
