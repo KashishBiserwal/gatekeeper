@@ -35,9 +35,13 @@ app.get("/api/ping", (req, res) => {
   return res.status(200).send({ message: "pong" });
 });
 
-app.get("/api", (req, res) => res.send("Server running..."));
+app.get('/api', (req, res) => {
+  res.json({ message: 'API is working' });
+});
 
-
+app.get('/', (req, res) => {
+  res.send('Hello, world!'); // Just a simple response for testing
+});
 
 app.use("/auth", authRouter);
 // @ts-ignore

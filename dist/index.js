@@ -34,7 +34,12 @@ app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "upl
 app.get("/api/ping", (req, res) => {
     return res.status(200).send({ message: "pong" });
 });
-app.get("/api", (req, res) => res.send("Server running..."));
+app.get('/api', (req, res) => {
+    res.json({ message: 'API is working' });
+});
+app.get('/', (req, res) => {
+    res.send('Hello, world!'); // Just a simple response for testing
+});
 app.use("/auth", auth_routes_1.default);
 // @ts-ignore
 app.use("/user", middleware_1.default.AuthMiddleware, user_routes_1.default);
