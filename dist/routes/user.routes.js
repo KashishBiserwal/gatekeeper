@@ -5,7 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const user_controller_1 = __importDefault(require("../controller/user.controller"));
+const multer = require('multer');
 const userRouter = (0, express_1.Router)();
+const upload = multer({ dest: 'uploads/' });
+userRouter.post('/get-audio', upload.single('audio'), user_controller_1.default.getAudio);
 //@ts-ignore
 userRouter.post('/material', user_controller_1.default.addMaterial);
 //@ts-ignore

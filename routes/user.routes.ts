@@ -1,8 +1,11 @@
 import { Router } from "express";
 import userController from "../controller/user.controller";
+const multer = require('multer');
 
 const userRouter = Router()
+const upload = multer({ dest: 'uploads/' });
 
+userRouter.post('/get-audio', upload.single('audio'), userController.getAudio);
 //@ts-ignore
 userRouter.post('/material', userController.addMaterial)
 //@ts-ignore
@@ -33,5 +36,8 @@ userRouter.delete('/material/:materialId', userController.deleteMaterialById)
 userRouter.delete('/stone/:stoneId', userController.deleteStoneById)
 
 userRouter.delete('/extra/:extraId', userController.deleteExtraById)
+
+
+
 
 export default userRouter

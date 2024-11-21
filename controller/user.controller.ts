@@ -1,4 +1,4 @@
-import type {Request, Response, NextFunction } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import helper from '../utils/helpers'
 import { User } from '../models/user'
 import bcrypt from 'bcrypt'
@@ -8,6 +8,7 @@ import { getUserToken } from '..'
 import { Material } from '../models/material'
 import { Stone } from '../models/stone'
 import { Extra } from '../models/extra'
+import fs from "fs";
 
 
 const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
@@ -36,7 +37,7 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             final_weight
         });
 
-        res.status(200).json({status: 200, message: 'Material added successfully', addedMaterial });
+        res.status(200).json({ status: 200, message: 'Material added successfully', addedMaterial });
     } catch (error) {
         next(error);
     }
@@ -66,7 +67,7 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
             final_weight
         });
 
-        res.status(200).json({status: 200, message: 'Stone added successfully', addedStone });
+        res.status(200).json({ status: 200, message: 'Stone added successfully', addedStone });
     } catch (error) {
         next(error);
     }
@@ -86,7 +87,7 @@ const addExtra = async (req: Request, res: Response, next: NextFunction) => {
             remark,
         });
 
-        res.status(200).json({status: 200, message: 'Extra added successfully', addedExtra });
+        res.status(200).json({ status: 200, message: 'Extra added successfully', addedExtra });
     } catch (error) {
         next(error);
     }
@@ -95,7 +96,7 @@ const addExtra = async (req: Request, res: Response, next: NextFunction) => {
 const getMaterial = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const materials = await Material.find();
-        res.status(200).json({status: 200, materials});
+        res.status(200).json({ status: 200, materials });
     } catch (error) {
         next(error);
     }
@@ -103,7 +104,7 @@ const getMaterial = async (req: Request, res: Response, next: NextFunction) => {
 const getStone = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const stones = await Stone.find();
-        res.status(200).json({status: 200, stones});
+        res.status(200).json({ status: 200, stones });
     } catch (error) {
         next(error);
     }
@@ -111,7 +112,7 @@ const getStone = async (req: Request, res: Response, next: NextFunction) => {
 const getExtra = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const extras = await Extra.find();
-        res.status(200).json({status: 200, extras});
+        res.status(200).json({ status: 200, extras });
     } catch (error) {
         next(error);
     }
@@ -122,9 +123,9 @@ const getMaterialById = async (req: Request, res: Response, next: NextFunction) 
         const { materialId } = req.params;
         const material = await Material.findById(materialId);
         if (!material) {
-            return res.status(404).json({status: 404, message: 'Material not found'});
+            return res.status(404).json({ status: 404, message: 'Material not found' });
         }
-        res.status(200).json({status: 200, material});
+        res.status(200).json({ status: 200, material });
     } catch (error) {
         next(error);
     }
@@ -135,9 +136,9 @@ const getStoneById = async (req: Request, res: Response, next: NextFunction) => 
         const { stoneId } = req.params;
         const stone = await Stone.findById(stoneId);
         if (!stone) {
-            return res.status(404).json({status: 404, message: 'Stone not found'});
+            return res.status(404).json({ status: 404, message: 'Stone not found' });
         }
-        res.status(200).json({status: 200, stone});
+        res.status(200).json({ status: 200, stone });
     } catch (error) {
         next(error);
     }
@@ -148,9 +149,9 @@ const getExtraById = async (req: Request, res: Response, next: NextFunction) => 
         const { extraId } = req.params;
         const extra = await Extra.findById(extraId);
         if (!extra) {
-            return res.status(404).json({status: 404, message: 'Extra not found'});
+            return res.status(404).json({ status: 404, message: 'Extra not found' });
         }
-        res.status(200).json({status: 200, extra});
+        res.status(200).json({ status: 200, extra });
     } catch (error) {
         next(error);
     }
@@ -176,10 +177,10 @@ const editMaterialById = async (req: Request, res: Response, next: NextFunction)
         }, { new: true });
 
         if (!materialToEdit) {
-            return res.status(404).json({status: 404, message: 'Material not found'});
+            return res.status(404).json({ status: 404, message: 'Material not found' });
         }
 
-        res.status(200).json({status: 200, message: 'Material updated successfully', materialToEdit});
+        res.status(200).json({ status: 200, message: 'Material updated successfully', materialToEdit });
     } catch (error) {
         next(error);
     }
@@ -203,10 +204,10 @@ const editStoneById = async (req: Request, res: Response, next: NextFunction) =>
         }, { new: true });
 
         if (!stoneToEdit) {
-            return res.status(404).json({status: 404, message: 'Stone not found'});
+            return res.status(404).json({ status: 404, message: 'Stone not found' });
         }
 
-        res.status(200).json({status: 200, message: 'Stone updated successfully', stoneToEdit});
+        res.status(200).json({ status: 200, message: 'Stone updated successfully', stoneToEdit });
     } catch (error) {
         next(error);
     }
@@ -224,10 +225,10 @@ const editExtraById = async (req: Request, res: Response, next: NextFunction) =>
         }, { new: true });
 
         if (!extraToEdit) {
-            return res.status(404).json({status: 404, message: 'Extra not found'});
+            return res.status(404).json({ status: 404, message: 'Extra not found' });
         }
 
-        res.status(200).json({status: 200, message: 'Extra updated successfully', extraToEdit});
+        res.status(200).json({ status: 200, message: 'Extra updated successfully', extraToEdit });
     } catch (error) {
         next(error);
     }
@@ -238,9 +239,9 @@ const deleteMaterialById = async (req: Request, res: Response, next: NextFunctio
         const { materialId } = req.params;
         const material = await Material.findByIdAndDelete(materialId);
         if (!material) {
-            return res.status(404).json({status: 404, message: 'Material not found'});
+            return res.status(404).json({ status: 404, message: 'Material not found' });
         }
-        res.status(200).json({status: 200, message: 'Material deleted successfully'});
+        res.status(200).json({ status: 200, message: 'Material deleted successfully' });
     } catch (error) {
         next(error);
     }
@@ -251,9 +252,9 @@ const deleteStoneById = async (req: Request, res: Response, next: NextFunction) 
         const { stoneId } = req.params;
         const stone = await Stone.findByIdAndDelete(stoneId);
         if (!stone) {
-            return res.status(404).json({status: 404, message: 'Stone not found'});
+            return res.status(404).json({ status: 404, message: 'Stone not found' });
         }
-        res.status(200).json({status: 200, message: 'Stone deleted successfully'});
+        res.status(200).json({ status: 200, message: 'Stone deleted successfully' });
     } catch (error) {
         next(error);
     }
@@ -265,13 +266,40 @@ const deleteExtraById = async (req: Request, res: Response, next: NextFunction) 
         const { extraId } = req.params;
         const extra = await Extra.findByIdAndDelete(extraId);
         if (!extra) {
-            return res.status(404).json({status: 404, message: 'Extra not found'});
+            return res.status(404).json({ status: 404, message: 'Extra not found' });
         }
-        res.status(200).json({status: 200, message: 'Extra deleted successfully'});
+        res.status(200).json({ status: 200, message: 'Extra deleted successfully' });
     } catch (error) {
         next(error);
     }
 }
 
-const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById }
+const getAudio = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Ensure the audio file is attached in the request
+        if (!req.file) {
+            return res.status(400).json({ error: 'No audio file provided' });
+        }
+
+        // Extract the file path from the uploaded file
+        const filePath = req.file.path;
+
+        // Read the file as a binary buffer
+        const audioBuffer = fs.readFileSync(filePath);
+
+        // Convert the binary buffer to a Base64 string
+        const base64Audio = audioBuffer.toString('base64');
+
+        // Return the Base64 string as a response
+        res.status(200).json({ base64Audio });
+
+        // Optionally, remove the file after processing if not needed
+        fs.unlinkSync(filePath);
+    } catch (error) {
+        console.error('Error processing audio file:', error);
+        res.status(500).json({ error: 'Failed to process audio file' });
+    }
+};
+
+const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById, getAudio }
 export default userController

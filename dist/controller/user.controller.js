@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const material_1 = require("../models/material");
 const stone_1 = require("../models/stone");
 const extra_1 = require("../models/extra");
+const fs_1 = __importDefault(require("fs"));
 const addMaterial = async (req, res, next) => {
     try {
         const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, material, final_weight } = req.body;
@@ -216,5 +220,27 @@ const deleteExtraById = async (req, res, next) => {
         next(error);
     }
 };
-const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById };
+const getAudio = async (req, res, next) => {
+    try {
+        // Ensure the audio file is attached in the request
+        if (!req.file) {
+            return res.status(400).json({ error: 'No audio file provided' });
+        }
+        // Extract the file path from the uploaded file
+        const filePath = req.file.path;
+        // Read the file as a binary buffer
+        const audioBuffer = fs_1.default.readFileSync(filePath);
+        // Convert the binary buffer to a Base64 string
+        const base64Audio = audioBuffer.toString('base64');
+        // Return the Base64 string as a response
+        res.status(200).json({ base64Audio });
+        // Optionally, remove the file after processing if not needed
+        fs_1.default.unlinkSync(filePath);
+    }
+    catch (error) {
+        console.error('Error processing audio file:', error);
+        res.status(500).json({ error: 'Failed to process audio file' });
+    }
+};
+const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById, getAudio };
 exports.default = userController;
