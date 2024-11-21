@@ -11,6 +11,37 @@ import { Extra } from '../models/extra'
 import fs from "fs";
 
 
+
+
+const getAudio = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Check if a file is uploaded
+        if (!req.files || !req.files.audio) {
+            return res.status(400).json({ error: "No audio file provided" });
+        }
+
+        // Extract the uploaded file
+        const audioFile = req.files.audio;
+
+        // Ensure the file is a Buffer
+        if (!audioFile || !(audioFile as any).data) {
+            return res.status(400).json({ error: "Invalid audio file" });
+        }
+
+        // Convert the file buffer to a Base64 string
+        const base64Audio = (audioFile as any).data.toString("base64");
+
+        // Return the Base64 string as a response
+        res.status(200).json({ base64Audio });
+    } catch (error) {
+        console.error("Error processing audio file:", error);
+        res.status(500).json({ error: "Failed to process audio file" });
+    }
+};
+
+
+
+
 const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {
@@ -274,31 +305,6 @@ const deleteExtraById = async (req: Request, res: Response, next: NextFunction) 
     }
 }
 
-const getAudio = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        // Check if a file is uploaded
-        if (!req.files || !req.files.audio) {
-            return res.status(400).json({ error: "No audio file provided" });
-        }
-
-        // Extract the uploaded file
-        const audioFile = req.files.audio;
-
-        // Ensure the file is a Buffer
-        if (!audioFile || !(audioFile as any).data) {
-            return res.status(400).json({ error: "Invalid audio file" });
-        }
-
-        // Convert the file buffer to a Base64 string
-        const base64Audio = (audioFile as any).data.toString("base64");
-
-        // Return the Base64 string as a response
-        res.status(200).json({ base64Audio });
-    } catch (error) {
-        console.error("Error processing audio file:", error);
-        res.status(500).json({ error: "Failed to process audio file" });
-    }
-};
 
 const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById, getAudio }
 export default userController
