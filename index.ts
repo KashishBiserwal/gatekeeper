@@ -7,7 +7,7 @@ import middleware from "./utils/middleware";
 import { User } from "./models/user";
 import userRouter from "./routes/user.routes";
 import adminRouter from "./routes/admin.routes";
-
+import path from "path";
 
 let isConnected: boolean = false;
 
@@ -30,7 +30,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.get("/ping", (req, res) => {
   return res.status(200).send({ message: "pong" });
 });

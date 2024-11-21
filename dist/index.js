@@ -13,6 +13,7 @@ const middleware_1 = __importDefault(require("./utils/middleware"));
 const user_1 = require("./models/user");
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
+const path_1 = __importDefault(require("path"));
 let isConnected = false;
 const connectToDatabase = async () => {
     if (isConnected) {
@@ -29,6 +30,7 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads")));
 app.get("/ping", (req, res) => {
     return res.status(200).send({ message: "pong" });
 });

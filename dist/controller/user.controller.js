@@ -1,8 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const material_1 = require("../models/material");
 const stone_1 = require("../models/stone");
 const extra_1 = require("../models/extra");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const getAudio = async (req, res, next) => {
     try {
         // Check if a file is uploaded
@@ -11,18 +16,31 @@ const getAudio = async (req, res, next) => {
         }
         // Extract the uploaded file
         const audioFile = req.files.audio;
-        // Ensure the file is a Buffer
-        if (!audioFile || !audioFile.data) {
+        // Ensure the file is valid
+        if (!audioFile || Array.isArray(audioFile) || !audioFile.mimetype.startsWith("audio/")) {
             return res.status(400).json({ error: "Invalid audio file" });
         }
-        // Convert the file buffer to a Base64 string
-        const base64Audio = audioFile.data.toString("base64");
-        // Return the Base64 string as a response
-        res.status(200).json({ base64Audio });
+        // Generate a unique filename
+        const uniqueName = `audio_${Date.now()}${path_1.default.extname(audioFile.name)}`;
+        // Define the directory to save the file
+        const uploadDir = path_1.default.join(__dirname, "../uploads");
+        if (!fs_1.default.existsSync(uploadDir)) {
+            fs_1.default.mkdirSync(uploadDir, { recursive: true });
+        }
+        // Define the full path for the uploaded file
+        const uploadPath = path_1.default.join(uploadDir, uniqueName);
+        // Move the file to the upload directory
+        await audioFile.mv(uploadPath);
+        // Save the file path to the database (example logic)
+        const audioUrl = `/uploads/${uniqueName}`;
+        // Replace with your database save logic
+        // await User.create({ audioPath: audioUrl });
+        // Return the file URL
+        res.status(200).json({ audioUrl });
     }
     catch (error) {
-        console.error("Error processing audio file:", error);
-        res.status(500).json({ error: "Failed to process audio file" });
+        console.error("Error handling audio file upload:", error);
+        res.status(500).json({ error: "Failed to upload audio file" });
     }
 };
 const addMaterial = async (req, res, next) => {
