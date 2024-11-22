@@ -5,7 +5,7 @@ import { Billing } from '../models/billing'
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const users = await User.find().select('-password');
+        const users = await User.find({ role: { $ne: 'admin' } }).select('-password');
         res.status(200).json({ status: 200, users });
     } catch (error) {
         next(error);

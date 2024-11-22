@@ -4,7 +4,7 @@ const user_1 = require("../models/user");
 const billing_1 = require("../models/billing");
 const getAllUsers = async (req, res, next) => {
     try {
-        const users = await user_1.User.find().select('-password');
+        const users = await user_1.User.find({ role: { $ne: 'admin' } }).select('-password');
         res.status(200).json({ status: 200, users });
     }
     catch (error) {
