@@ -10,4 +10,9 @@ const adminRouter = (0, express_1.Router)();
 adminRouter.get('/users', admin_controller_1.default.getAllUsers);
 //@ts-ignore
 adminRouter.put('/switch/:userId', admin_controller_1.default.switchUser);
+adminRouter.post('/set-bills', admin_controller_1.default.setBills);
+adminRouter.get('/get-bills', admin_controller_1.default.getBills);
+adminRouter.put('/edit-bill/:id', admin_controller_1.default.editBill);
+adminRouter.delete('/delete-bill/:id', admin_controller_1.default.deleteBill);
+adminRouter.get('/get-bill/:id', admin_controller_1.default.getBillById);
 exports.default = adminRouter;

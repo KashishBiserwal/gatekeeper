@@ -1,8 +1,11 @@
 import { Router } from "express";
 import userController from "../controller/user.controller";
+import fileUpload from "express-fileupload";
 
 const userRouter = Router()
+userRouter.use(fileUpload());
 
+userRouter.post('/get-audio', userController.getAudio);
 //@ts-ignore
 userRouter.post('/material', userController.addMaterial)
 //@ts-ignore
@@ -27,5 +30,14 @@ userRouter.put('/material/:materialId', userController.editMaterialById)
 userRouter.put('/stone/:stoneId', userController.editStoneById)
 //@ts-ignore
 userRouter.put('/extra/:extraId', userController.editExtraById)
+
+userRouter.delete('/material/:materialId', userController.deleteMaterialById)
+
+userRouter.delete('/stone/:stoneId', userController.deleteStoneById)
+
+userRouter.delete('/extra/:extraId', userController.deleteExtraById)
+
+
+
 
 export default userRouter

@@ -13,6 +13,7 @@ const middleware_1 = __importDefault(require("./utils/middleware"));
 const user_1 = require("./models/user");
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
+const path_1 = __importDefault(require("path"));
 let isConnected = false;
 const connectToDatabase = async () => {
     if (isConnected) {
@@ -20,7 +21,8 @@ const connectToDatabase = async () => {
         return;
     }
     console.log("Establishing new database connection");
-    await mongoose_1.default.connect('mongodb+srv://krish:gatekeeper@cluster0.7fby9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+    // await mongoose.connect('mongodb+srv://krish:gatekeeper@cluster0.7fby9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+    await mongoose_1.default.connect('mongodb+srv://ravipoddar0712:ravipoddar@cluster0.8qftl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
     isConnected = true;
 };
 exports.connectToDatabase = connectToDatabase;
@@ -29,10 +31,13 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads")));
 app.get("/ping", (req, res) => {
     return res.status(200).send({ message: "pong" });
 });
-app.get("/", (req, res) => res.send("Server running..."));
+app.get('/', (req, res) => {
+    res.send('Hello, world!'); // Just a simple response for testing
+});
 app.use("/auth", auth_routes_1.default);
 // @ts-ignore
 app.use("/user", middleware_1.default.AuthMiddleware, user_routes_1.default);
@@ -56,4 +61,8 @@ exports.getUserToken = getUserToken;
 //   .catch((err) => {
 //     console.log(err);
 //   });
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
 exports.default = app;

@@ -5,7 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const user_controller_1 = __importDefault(require("../controller/user.controller"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const userRouter = (0, express_1.Router)();
+userRouter.use((0, express_fileupload_1.default)());
+userRouter.post('/get-audio', user_controller_1.default.getAudio);
 //@ts-ignore
 userRouter.post('/material', user_controller_1.default.addMaterial);
 //@ts-ignore
@@ -30,4 +33,7 @@ userRouter.put('/material/:materialId', user_controller_1.default.editMaterialBy
 userRouter.put('/stone/:stoneId', user_controller_1.default.editStoneById);
 //@ts-ignore
 userRouter.put('/extra/:extraId', user_controller_1.default.editExtraById);
+userRouter.delete('/material/:materialId', user_controller_1.default.deleteMaterialById);
+userRouter.delete('/stone/:stoneId', user_controller_1.default.deleteStoneById);
+userRouter.delete('/extra/:extraId', user_controller_1.default.deleteExtraById);
 exports.default = userRouter;

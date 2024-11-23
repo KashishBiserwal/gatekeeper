@@ -7,9 +7,9 @@ import middleware from "./utils/middleware";
 import { User } from "./models/user";
 import userRouter from "./routes/user.routes";
 import adminRouter from "./routes/admin.routes";
+import path from "path";
 
-
-let isConnected: boolean = false; 
+let isConnected: boolean = false;
 
 export const connectToDatabase = async () => {
   if (isConnected) {
@@ -18,7 +18,8 @@ export const connectToDatabase = async () => {
   }
 
   console.log("Establishing new database connection");
-  await mongoose.connect('mongodb+srv://krish:gatekeeper@cluster0.7fby9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+  // await mongoose.connect('mongodb+srv://krish:gatekeeper@cluster0.7fby9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+  await mongoose.connect('mongodb+srv://ravipoddar0712:ravipoddar@cluster0.8qftl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
   isConnected = true;
 };
 
@@ -30,12 +31,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/ping", (req, res) => {
   return res.status(200).send({ message: "pong" });
 });
 
-app.get("/", (req, res) => res.send("Server running..."));
+
+app.get('/', (req, res) => {
+  res.send('Hello, world!'); // Just a simple response for testing
+});
 
 app.use("/auth", authRouter);
 // @ts-ignore
@@ -61,4 +66,10 @@ export const getUserToken = async (userId: any) => {
 //     console.log(err);
 //   });
 
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
 export default app;
+
