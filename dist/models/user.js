@@ -9,5 +9,8 @@ const UserSchema = new mongoose_1.Schema({
     role: { type: String, default: 'user' },
     isActive: { type: Boolean, default: true },
     employeeId: { type: String, required: false },
+    created_at: { type: Date, default: Date.now },
+}, {
+    timestamps: true
 });
 exports.User = mongoose_1.models.User || (0, mongoose_1.model)('User', UserSchema);

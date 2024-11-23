@@ -7,6 +7,9 @@ const UserSchema = new Schema({
     role: {type: String, default: 'user'},
     isActive: {type: Boolean, default: true},
     employeeId: {type: String, required: false},
+    created_at: {type: Date, default: Date.now},
+}, {
+    timestamps: true
 })
 
 export const User = models.User || model('User', UserSchema)

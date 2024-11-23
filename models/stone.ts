@@ -8,7 +8,12 @@ const StoneSchema = new Schema({
     remark: {type: String, required: false},
     rst: {type: String, required: false},
     vehicle_number: {type: String, required: false},
-    final_weight: {type: String, required: false}
+    final_weight: {type: String, required: false},
+    category: {type: String, required: false},
+    created_at: {type: Date, default: Date.now},
+}, 
+{
+    timestamps: true
 })
 
 export const Stone = models.Stone || model('Stone', StoneSchema)

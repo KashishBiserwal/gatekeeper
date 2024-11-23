@@ -21,8 +21,12 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             rst,
             vehicle_number,
             material,
-            final_weight
+            final_weight,
+            category
         } = req.body;
+        if(!category){
+            return res.status(400).json({status: 400, message: 'Category is required'});
+        }
 
         const addedMaterial = await Material.create({
             vehicle_picture,
@@ -33,7 +37,8 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             rst,
             vehicle_number,
             material,
-            final_weight
+            final_weight,
+            category
         });
 
         res.status(200).json({status: 200, message: 'Material added successfully', addedMaterial });
@@ -52,8 +57,13 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
             remark,
             rst,
             vehicle_number,
-            final_weight
+            final_weight,
+            category
         } = req.body;
+
+        if(!category){
+            return res.status(400).json({status: 400, message: 'Category is required'});
+        }
 
         const addedStone = await Stone.create({
             vehicle_picture,
@@ -63,7 +73,8 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
             remark,
             rst,
             vehicle_number,
-            final_weight
+            final_weight,
+            category
         });
 
         res.status(200).json({status: 200, message: 'Stone added successfully', addedStone });
@@ -78,12 +89,18 @@ const addExtra = async (req: Request, res: Response, next: NextFunction) => {
             vehicle_picture,
             audio,
             remark,
+            category
         } = req.body;
+
+        if(!category){
+            return res.status(400).json({status: 400, message: 'Category is required'});
+        }
 
         const addedExtra = await Extra.create({
             vehicle_picture,
             audio,
             remark,
+            category
         });
 
         res.status(200).json({status: 200, message: 'Extra added successfully', addedExtra });
@@ -164,7 +181,8 @@ const editMaterialById = async (req: Request, res: Response, next: NextFunction)
             rst,
             vehicle_number,
             material,
-            final_weight
+            final_weight,
+            category
         } = req.body;
 
         const materialToEdit = await Material.findByIdAndUpdate(materialId, {
@@ -172,7 +190,8 @@ const editMaterialById = async (req: Request, res: Response, next: NextFunction)
             rst,
             vehicle_number,
             material,
-            final_weight
+            final_weight,
+            category
         }, { new: true });
 
         if (!materialToEdit) {
@@ -192,14 +211,16 @@ const editStoneById = async (req: Request, res: Response, next: NextFunction) =>
             remark,
             rst,
             vehicle_number,
-            final_weight
+            final_weight,
+            category
         } = req.body;
 
         const stoneToEdit = await Stone.findByIdAndUpdate(stoneId, {
             remark,
             rst,
             vehicle_number,
-            final_weight
+            final_weight,
+            category
         }, { new: true });
 
         if (!stoneToEdit) {
@@ -217,10 +238,12 @@ const editExtraById = async (req: Request, res: Response, next: NextFunction) =>
         const { extraId } = req.params;
         const {
             remark,
+            category
         } = req.body;
 
         const extraToEdit = await Extra.findByIdAndUpdate(extraId, {
             remark,
+            category
         }, { new: true });
 
         if (!extraToEdit) {

@@ -10,6 +10,10 @@ const StoneSchema = new mongoose_1.Schema({
     remark: { type: String, required: false },
     rst: { type: String, required: false },
     vehicle_number: { type: String, required: false },
-    final_weight: { type: String, required: false }
+    final_weight: { type: String, required: false },
+    category: { type: String, required: false },
+    created_at: { type: Date, default: Date.now },
+}, {
+    timestamps: true
 });
 exports.Stone = mongoose_1.models.Stone || (0, mongoose_1.model)('Stone', StoneSchema);

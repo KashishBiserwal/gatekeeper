@@ -5,7 +5,10 @@ const stone_1 = require("../models/stone");
 const extra_1 = require("../models/extra");
 const addMaterial = async (req, res, next) => {
     try {
-        const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, material, final_weight } = req.body;
+        const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, material, final_weight, category } = req.body;
+        if (!category) {
+            return res.status(400).json({ status: 400, message: 'Category is required' });
+        }
         const addedMaterial = await material_1.Material.create({
             vehicle_picture,
             weight_picture,
@@ -15,7 +18,8 @@ const addMaterial = async (req, res, next) => {
             rst,
             vehicle_number,
             material,
-            final_weight
+            final_weight,
+            category
         });
         res.status(200).json({ status: 200, message: 'Material added successfully', addedMaterial });
     }
@@ -25,7 +29,10 @@ const addMaterial = async (req, res, next) => {
 };
 const addStone = async (req, res, next) => {
     try {
-        const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, final_weight } = req.body;
+        const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, final_weight, category } = req.body;
+        if (!category) {
+            return res.status(400).json({ status: 400, message: 'Category is required' });
+        }
         const addedStone = await stone_1.Stone.create({
             vehicle_picture,
             weight_picture,
@@ -34,7 +41,8 @@ const addStone = async (req, res, next) => {
             remark,
             rst,
             vehicle_number,
-            final_weight
+            final_weight,
+            category
         });
         res.status(200).json({ status: 200, message: 'Stone added successfully', addedStone });
     }
@@ -44,11 +52,15 @@ const addStone = async (req, res, next) => {
 };
 const addExtra = async (req, res, next) => {
     try {
-        const { vehicle_picture, audio, remark, } = req.body;
+        const { vehicle_picture, audio, remark, category } = req.body;
+        if (!category) {
+            return res.status(400).json({ status: 400, message: 'Category is required' });
+        }
         const addedExtra = await extra_1.Extra.create({
             vehicle_picture,
             audio,
             remark,
+            category
         });
         res.status(200).json({ status: 200, message: 'Extra added successfully', addedExtra });
     }
@@ -125,13 +137,14 @@ const getExtraById = async (req, res, next) => {
 const editMaterialById = async (req, res, next) => {
     try {
         const { materialId } = req.params;
-        const { remark, rst, vehicle_number, material, final_weight } = req.body;
+        const { remark, rst, vehicle_number, material, final_weight, category } = req.body;
         const materialToEdit = await material_1.Material.findByIdAndUpdate(materialId, {
             remark,
             rst,
             vehicle_number,
             material,
-            final_weight
+            final_weight,
+            category
         }, { new: true });
         if (!materialToEdit) {
             return res.status(404).json({ status: 404, message: 'Material not found' });
@@ -145,12 +158,13 @@ const editMaterialById = async (req, res, next) => {
 const editStoneById = async (req, res, next) => {
     try {
         const { stoneId } = req.params;
-        const { remark, rst, vehicle_number, final_weight } = req.body;
+        const { remark, rst, vehicle_number, final_weight, category } = req.body;
         const stoneToEdit = await stone_1.Stone.findByIdAndUpdate(stoneId, {
             remark,
             rst,
             vehicle_number,
-            final_weight
+            final_weight,
+            category
         }, { new: true });
         if (!stoneToEdit) {
             return res.status(404).json({ status: 404, message: 'Stone not found' });
@@ -164,9 +178,10 @@ const editStoneById = async (req, res, next) => {
 const editExtraById = async (req, res, next) => {
     try {
         const { extraId } = req.params;
-        const { remark, } = req.body;
+        const { remark, category } = req.body;
         const extraToEdit = await extra_1.Extra.findByIdAndUpdate(extraId, {
             remark,
+            category
         }, { new: true });
         if (!extraToEdit) {
             return res.status(404).json({ status: 404, message: 'Extra not found' });
