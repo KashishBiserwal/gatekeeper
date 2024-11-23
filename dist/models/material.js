@@ -6,6 +6,7 @@ const MaterialSchema = new mongoose_1.Schema({
     vehicle_picture: { type: String, required: false },
     weight_picture: { type: String, required: false },
     category: { type: String, required: false },
+    size: { type: String, required: false },
     slip_picture: { type: String, required: false },
     audio: { type: String, required: false },
     remark: { type: String, required: false },

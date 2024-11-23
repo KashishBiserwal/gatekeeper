@@ -45,7 +45,7 @@ const getAudio = async (req, res, next) => {
 };
 const addMaterial = async (req, res, next) => {
     try {
-        const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, material, final_weight, category } = req.body;
+        const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, material, final_weight, category, size } = req.body;
         if (!category) {
             return res.status(400).json({ status: 400, message: 'Category is required' });
         }
@@ -59,7 +59,8 @@ const addMaterial = async (req, res, next) => {
             vehicle_number,
             material,
             final_weight,
-            category
+            category,
+            size
         });
         res.status(200).json({ status: 200, message: 'Material added successfully', addedMaterial });
     }
@@ -177,14 +178,15 @@ const getExtraById = async (req, res, next) => {
 const editMaterialById = async (req, res, next) => {
     try {
         const { materialId } = req.params;
-        const { remark, rst, vehicle_number, material, final_weight, category } = req.body;
+        const { remark, rst, vehicle_number, material, final_weight, category, size } = req.body;
         const materialToEdit = await material_1.Material.findByIdAndUpdate(materialId, {
             remark,
             rst,
             vehicle_number,
             material,
             final_weight,
-            category
+            category,
+            size
         }, { new: true });
         if (!materialToEdit) {
             return res.status(404).json({ status: 404, message: 'Material not found' });

@@ -71,7 +71,8 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             vehicle_number,
             material,
             final_weight,
-            category
+            category,
+            size
         } = req.body;
         if(!category){
             return res.status(400).json({status: 400, message: 'Category is required'});
@@ -87,7 +88,8 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             vehicle_number,
             material,
             final_weight,
-            category
+            category,
+            size
         });
 
         res.status(200).json({ status: 200, message: 'Material added successfully', addedMaterial });
@@ -231,7 +233,8 @@ const editMaterialById = async (req: Request, res: Response, next: NextFunction)
             vehicle_number,
             material,
             final_weight,
-            category
+            category,
+            size
         } = req.body;
 
         const materialToEdit = await Material.findByIdAndUpdate(materialId, {
@@ -240,7 +243,8 @@ const editMaterialById = async (req: Request, res: Response, next: NextFunction)
             vehicle_number,
             material,
             final_weight,
-            category
+            category,
+            size
         }, { new: true });
 
         if (!materialToEdit) {
