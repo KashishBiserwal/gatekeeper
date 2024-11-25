@@ -44,6 +44,8 @@ const getAudio = async (req, res, next) => {
     }
 };
 const addMaterial = async (req, res, next) => {
+    const userId = req.user;
+    const userName = req.user.name;
     try {
         const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, material, final_weight, category, size } = req.body;
         if (!category) {
@@ -60,7 +62,8 @@ const addMaterial = async (req, res, next) => {
             material,
             final_weight,
             category,
-            size
+            size,
+            created_by: userName
         });
         res.status(200).json({ status: 200, message: 'Material added successfully', addedMaterial });
     }
@@ -69,6 +72,7 @@ const addMaterial = async (req, res, next) => {
     }
 };
 const addStone = async (req, res, next) => {
+    const userName = req.user.name;
     try {
         const { vehicle_picture, weight_picture, slip_picture, audio, remark, rst, vehicle_number, final_weight, category } = req.body;
         if (!category) {
@@ -83,7 +87,8 @@ const addStone = async (req, res, next) => {
             rst,
             vehicle_number,
             final_weight,
-            category
+            category,
+            created_by: userName
         });
         res.status(200).json({ status: 200, message: 'Stone added successfully', addedStone });
     }
@@ -92,6 +97,7 @@ const addStone = async (req, res, next) => {
     }
 };
 const addExtra = async (req, res, next) => {
+    const userName = req.user.name;
     try {
         const { vehicle_picture, audio, remark, category } = req.body;
         if (!category) {
@@ -101,7 +107,8 @@ const addExtra = async (req, res, next) => {
             vehicle_picture,
             audio,
             remark,
-            category
+            category,
+            created_by: userName
         });
         res.status(200).json({ status: 200, message: 'Extra added successfully', addedExtra });
     }

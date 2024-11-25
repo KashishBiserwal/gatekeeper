@@ -12,6 +12,7 @@ const StoneSchema = new mongoose_1.Schema({
     vehicle_number: { type: String, required: false },
     final_weight: { type: String, required: false },
     category: { type: String, required: false },
+    created_by: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' },
     created_at: { type: Date, default: Date.now },
 }, {
     timestamps: true

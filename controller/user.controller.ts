@@ -14,6 +14,7 @@ import path from "path";
 
 
 
+
 const getAudio = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Check if a file is uploaded
@@ -59,7 +60,10 @@ const getAudio = async (req: Request, res: Response, next: NextFunction) => {
 
 
 
-const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
+const addMaterial = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+    const userId = req.user;
+    const userName = req.user.name;
+
     try {
         const {
             vehicle_picture,
@@ -74,9 +78,10 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             category,
             size
         } = req.body;
-        if(!category){
-            return res.status(400).json({status: 400, message: 'Category is required'});
+        if (!category) {
+            return res.status(400).json({ status: 400, message: 'Category is required' });
         }
+
 
         const addedMaterial = await Material.create({
             vehicle_picture,
@@ -89,7 +94,9 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
             material,
             final_weight,
             category,
-            size
+            size,
+            created_by: userName
+
         });
 
         res.status(200).json({ status: 200, message: 'Material added successfully', addedMaterial });
@@ -98,7 +105,8 @@ const addMaterial = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const addStone = async (req: Request, res: Response, next: NextFunction) => {
+const addStone = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+    const userName = req.user.name;
     try {
         const {
             vehicle_picture,
@@ -112,8 +120,8 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
             category
         } = req.body;
 
-        if(!category){
-            return res.status(400).json({status: 400, message: 'Category is required'});
+        if (!category) {
+            return res.status(400).json({ status: 400, message: 'Category is required' });
         }
 
         const addedStone = await Stone.create({
@@ -125,7 +133,8 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
             rst,
             vehicle_number,
             final_weight,
-            category
+            category,
+            created_by: userName
         });
 
         res.status(200).json({ status: 200, message: 'Stone added successfully', addedStone });
@@ -134,7 +143,8 @@ const addStone = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const addExtra = async (req: Request, res: Response, next: NextFunction) => {
+const addExtra = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+    const userName = req.user.name;
     try {
         const {
             vehicle_picture,
@@ -143,15 +153,17 @@ const addExtra = async (req: Request, res: Response, next: NextFunction) => {
             category
         } = req.body;
 
-        if(!category){
-            return res.status(400).json({status: 400, message: 'Category is required'});
+        if (!category) {
+            return res.status(400).json({ status: 400, message: 'Category is required' });
         }
 
         const addedExtra = await Extra.create({
             vehicle_picture,
             audio,
             remark,
-            category
+            category,
+            created_by: userName
+
         });
 
         res.status(200).json({ status: 200, message: 'Extra added successfully', addedExtra });
