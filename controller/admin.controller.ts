@@ -4,6 +4,8 @@ import { Material } from '../models/material'
 import { Billing } from '../models/billing'
 import bcrypt from 'bcrypt'
 import { hash } from 'crypto'
+import { Extra } from '../models/extra'
+import { Stone } from '../models/stone'
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -250,10 +252,35 @@ const getBillById = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-
 const getAllAudio = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Query all three models and filter for audio length > 1
+        const materialAudios = await Material.find({
+            audio: { $exists: true, $type: "string", $ne: "", $regex: /^.{2,}/ }
+        });
 
+        const extraAudios = await Extra.find({
+            audio: { $exists: true, $type: "string", $ne: "", $regex: /^.{2,}/ }
+        });
+
+        const stoneAudios = await Stone.find({
+            audio: { $exists: true, $type: "string", $ne: "", $regex: /^.{2,}/ }
+        });
+
+        // Combine all results into one array
+        const allAudios = [...materialAudios, ...extraAudios, ...stoneAudios];
+
+        // Return the combined results
+        res.status(200).json({ data: allAudios });
+    } catch (error) {
+        console.error("Error retrieving audio:", error);
+        res.status(500).json({
+            message: "An error occurred while retrieving audio.",
+            error: error || error,
+        });
+    }
 };
+
 
 
 

@@ -4,8 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
+const material_1 = require("../models/material");
 const billing_1 = require("../models/billing");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const extra_1 = require("../models/extra");
+const stone_1 = require("../models/stone");
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await user_1.User.find({ role: { $ne: 'admin' } }).select('-password');
@@ -221,5 +224,28 @@ const getBillById = async (req, res, next) => {
     }
 };
 const getAllAudio = async (req, res, next) => {
+    try {
+        // Query all three models and filter for audio length > 1
+        const materialAudios = await material_1.Material.find({
+            audio: { $exists: true, $type: "string", $ne: "", $regex: /^.{2,}/ }
+        });
+        const extraAudios = await extra_1.Extra.find({
+            audio: { $exists: true, $type: "string", $ne: "", $regex: /^.{2,}/ }
+        });
+        const stoneAudios = await stone_1.Stone.find({
+            audio: { $exists: true, $type: "string", $ne: "", $regex: /^.{2,}/ }
+        });
+        // Combine all results into one array
+        const allAudios = [...materialAudios, ...extraAudios, ...stoneAudios];
+        // Return the combined results
+        res.status(200).json({ data: allAudios });
+    }
+    catch (error) {
+        console.error("Error retrieving audio:", error);
+        res.status(500).json({
+            message: "An error occurred while retrieving audio.",
+            error: error || error,
+        });
+    }
 };
 exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById, getAllAudio };
