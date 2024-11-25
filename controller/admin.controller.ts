@@ -69,8 +69,8 @@ const editUser = async (req: Request, res: Response, next: NextFunction) => {
             user.password = hashedPassword;
         }
 
-        await user.save();
-        res.status(200).json({ status: 200, message: 'User updated successfully' });
+        const updatedUser = await user.save();
+        res.status(200).json({ status: 200, message: 'User updated successfully', user: updatedUser });
     } catch (error) {
         return next(error);
     }

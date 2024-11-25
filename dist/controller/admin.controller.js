@@ -63,8 +63,8 @@ const editUser = async (req, res, next) => {
             const hashedPassword = await bcrypt_1.default.hash(password, 10);
             user.password = hashedPassword;
         }
-        await user.save();
-        res.status(200).json({ status: 200, message: 'User updated successfully' });
+        const updatedUser = await user.save();
+        res.status(200).json({ status: 200, message: 'User updated successfully', user: updatedUser });
     }
     catch (error) {
         return next(error);
