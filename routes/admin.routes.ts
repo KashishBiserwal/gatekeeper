@@ -25,4 +25,12 @@ adminRouter.get('/get-bill/:id', adminController.getBillById)
 
 adminRouter.get('/get-all-audio', adminController.getAllAudio)
 
+adminRouter.delete('/delete-old-materials', adminController.deleteOldMaterials)
+
+adminRouter.delete('/delete-old-stones', adminController.deleteOldStones)
+
+adminRouter.delete('/delete-old-extras', adminController.deleteOldExtras)
+
+
+
 export default adminRouter

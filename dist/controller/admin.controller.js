@@ -248,4 +248,70 @@ const getAllAudio = async (req, res, next) => {
         });
     }
 };
-exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById, getAllAudio };
+// delete 3 month old materials
+const deleteOldMaterials = async (req, res, next) => {
+    try {
+        // Calculate the date for 3 months ago
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        // Delete documents where `created_at` is older than the calculated date
+        const result = await material_1.Material.deleteMany({ created_at: { $lt: threeMonthsAgo } });
+        // Send a success response with the number of deleted documents
+        res.status(200).json({
+            message: 'Old materials deleted successfully.',
+            deletedCount: result.deletedCount,
+        });
+    }
+    catch (error) {
+        console.error('Error deleting old materials:', error);
+        res.status(500).json({
+            message: 'An error occurred while deleting old materials.',
+            error,
+        });
+    }
+};
+// delete 3 month old Stones
+const deleteOldStones = async (req, res, next) => {
+    try {
+        // Calculate the date for 3 months ago
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        // Delete documents where `created_at` is older than the calculated date
+        const result = await stone_1.Stone.deleteMany({ created_at: { $lt: threeMonthsAgo } });
+        // Send a success response with the number of deleted documents
+        res.status(200).json({
+            message: 'Old Stones deleted successfully.',
+            deletedCount: result.deletedCount,
+        });
+    }
+    catch (error) {
+        console.error('Error deleting old Stones:', error);
+        res.status(500).json({
+            message: 'An error occurred while deleting old Stones.',
+            error,
+        });
+    }
+};
+// delete 3 month old extras
+const deleteOldExtras = async (req, res, next) => {
+    try {
+        // Calculate the date for 3 months ago
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        // Delete documents where `created_at` is older than the calculated date
+        const result = await extra_1.Extra.deleteMany({ created_at: { $lt: threeMonthsAgo } });
+        // Send a success response with the number of deleted documents
+        res.status(200).json({
+            message: 'Old extras deleted successfully.',
+            deletedCount: result.deletedCount,
+        });
+    }
+    catch (error) {
+        console.error('Error deleting old extras:', error);
+        res.status(500).json({
+            message: 'An error occurred while deleting old extras.',
+            error,
+        });
+    }
+};
+exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras };

@@ -19,4 +19,7 @@ adminRouter.put('/edit-bill/:id', admin_controller_1.default.editBill);
 adminRouter.delete('/delete-bill/:id', admin_controller_1.default.deleteBill);
 adminRouter.get('/get-bill/:id', admin_controller_1.default.getBillById);
 adminRouter.get('/get-all-audio', admin_controller_1.default.getAllAudio);
+adminRouter.delete('/delete-old-materials', admin_controller_1.default.deleteOldMaterials);
+adminRouter.delete('/delete-old-stones', admin_controller_1.default.deleteOldStones);
+adminRouter.delete('/delete-old-extras', admin_controller_1.default.deleteOldExtras);
 exports.default = adminRouter;
