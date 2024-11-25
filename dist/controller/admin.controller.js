@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
 const billing_1 = require("../models/billing");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await user_1.User.find({ role: { $ne: 'admin' } }).select('-password');
@@ -21,6 +25,46 @@ const switchUser = async (req, res, next) => {
         user.isActive = !user.isActive;
         await user.save();
         res.status(200).json({ status: 200, message: 'User switched successfully' });
+    }
+    catch (error) {
+        return next(error);
+    }
+};
+// delete user by id
+const deleteUser = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const user = await user_1.User.findByIdAndDelete(userId);
+        if (!user) {
+            return res.status(404).json({ status: 404, message: 'User not found' });
+        }
+        res.status(200).json({ status: 200, message: 'User deleted successfully' });
+    }
+    catch (error) {
+        return next(error);
+    }
+};
+// edit user by id, name, mobile, password
+const editUser = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const { name, mobile, password } = req.body;
+        const user = await user_1.User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ status: 404, message: 'User not found' });
+        }
+        if (name) {
+            user.name = name;
+        }
+        if (mobile) {
+            user.phone = mobile;
+        }
+        if (password) {
+            const hashedPassword = await bcrypt_1.default.hash(password, 10);
+            user.password = hashedPassword;
+        }
+        await user.save();
+        res.status(200).json({ status: 200, message: 'User updated successfully' });
     }
     catch (error) {
         return next(error);
@@ -153,4 +197,4 @@ const getBillById = async (req, res, next) => {
         });
     }
 };
-exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById };
+exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser };

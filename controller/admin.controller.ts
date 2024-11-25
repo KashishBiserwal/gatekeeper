@@ -2,6 +2,8 @@ import type { Request, Response, NextFunction } from 'express'
 import { User } from '../models/user'
 import { Material } from '../models/material'
 import { Billing } from '../models/billing'
+import bcrypt from 'bcrypt'
+import { hash } from 'crypto'
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -26,6 +28,57 @@ const switchUser = async (req: Request, res: Response, next: NextFunction) => {
         return next(error);
     }
 }
+
+
+// delete user by id
+
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findByIdAndDelete(userId);
+        if (!user) {
+            return res.status(404).json({ status: 404, message: 'User not found' });
+        }
+        res.status(200).json({ status: 200, message: 'User deleted successfully' });
+    } catch (error) {
+        return next(error);
+    }
+}
+
+
+// edit user by id, name, mobile, password
+
+const editUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    try {
+        const { userId } = req.params;
+        const { name, mobile, password } = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ status: 404, message: 'User not found' });
+        }
+
+        if (name) {
+            user.name = name;
+        }
+        if (mobile) {
+            user.phone = mobile;
+        }
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10)
+            user.password = hashedPassword;
+        }
+
+        await user.save();
+        res.status(200).json({ status: 200, message: 'User updated successfully' });
+    } catch (error) {
+        return next(error);
+    }
+
+}
+
+
+
 //post
 
 const setBills = async (req: Request, res: Response, next: NextFunction) => {
@@ -177,4 +230,6 @@ const getBillById = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 
-export default { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById };
+
+
+export default { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser };

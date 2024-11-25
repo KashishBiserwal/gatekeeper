@@ -6,6 +6,8 @@ const adminRouter = Router()
 
 //@ts-ignore
 adminRouter.get('/users', adminController.getAllUsers)
+adminRouter.delete('/delete-user/:userId', adminController.deleteUser)
+adminRouter.put('/edit-user/:userId', adminController.editUser)
 
 //@ts-ignore
 adminRouter.put('/switch/:userId', adminController.switchUser)

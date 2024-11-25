@@ -8,6 +8,8 @@ const admin_controller_1 = __importDefault(require("../controller/admin.controll
 const adminRouter = (0, express_1.Router)();
 //@ts-ignore
 adminRouter.get('/users', admin_controller_1.default.getAllUsers);
+adminRouter.delete('/delete-user/:userId', admin_controller_1.default.deleteUser);
+adminRouter.put('/edit-user/:userId', admin_controller_1.default.editUser);
 //@ts-ignore
 adminRouter.put('/switch/:userId', admin_controller_1.default.switchUser);
 adminRouter.post('/set-bills', admin_controller_1.default.setBills);
