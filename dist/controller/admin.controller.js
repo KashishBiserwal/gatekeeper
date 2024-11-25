@@ -36,12 +36,12 @@ const deleteUser = async (req, res, next) => {
         const { userId } = req.params;
         const user = await user_1.User.findByIdAndDelete(userId);
         if (!user) {
-            return res.status(404).json({ status: 404, message: 'User not found' });
+            return res.status(404).send({ status: 404, message: 'User not found' });
         }
-        res.status(200).json({ status: 200, message: 'User deleted successfully' });
+        res.status(200).send({ status: 200, message: 'User deleted successfully' });
     }
     catch (error) {
-        return next(error);
+        next(error);
     }
 };
 // edit user by id, name, mobile, password
@@ -77,6 +77,20 @@ const editUser = async (req, res, next) => {
     catch (error) {
         console.error('Error updating user:', error);
         next(error); // Forward error to the global error handler
+    }
+};
+// get user by id
+const getUserById = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const user = await user_1.User.findById(userId).select('-password');
+        if (!user) {
+            return res.status(404).json({ status: 404, message: 'User not found' });
+        }
+        res.status(200).json({ status: 200, user });
+    }
+    catch (error) {
+        next(error);
     }
 };
 //post
@@ -206,4 +220,4 @@ const getBillById = async (req, res, next) => {
         });
     }
 };
-exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser };
+exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById };
