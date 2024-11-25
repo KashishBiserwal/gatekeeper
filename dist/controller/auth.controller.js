@@ -36,20 +36,20 @@ const signUp = async (req, res, next) => {
     }
 };
 const login = async (req, res, next) => {
-    const isValidPaylod = helpers_1.default.isValidatePaylod(req.body, ['phone', 'password']);
+    const isValidPaylod = helpers_1.default.isValidatePaylod(req.body, ['employeeId', 'password']);
     if (!isValidPaylod) {
         return res.status(400).send({ error: "Invalid payload", error_message: "phone, password are required" });
     }
-    const { phone, password } = req.body;
+    const { employeeId, password } = req.body;
     try {
-        const user = await user_1.User.findOne({ phone });
+        const user = await user_1.User.findOne({ employeeId });
         if (!user)
             return res.status(400).send({ message: "User doesn't exist" });
         const isCorrectPassword = bcrypt_1.default.compareSync(password, user.password);
         if (!isCorrectPassword) {
             return res.status(400).send({ status: 400, message: "Incorrect Password" });
         }
-        const token = jsonwebtoken_1.default.sign({ phone: user.phone }, process.env.JWT_SECRET, {
+        const token = jsonwebtoken_1.default.sign({ employeeId: user.employeeId }, process.env.JWT_SECRET, {
             expiresIn: '7d'
         });
         await user.save();

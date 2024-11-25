@@ -8,7 +8,7 @@ const UserSchema = new mongoose_1.Schema({
     password: { type: String, required: true },
     role: { type: String, default: 'user' },
     isActive: { type: Boolean, default: true },
-    employeeId: { type: String, required: false },
+    employeeId: { type: String, required: false, unique: true },
     created_at: { type: Date, default: Date.now },
 }, {
     timestamps: true
