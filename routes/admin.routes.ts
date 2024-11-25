@@ -23,6 +23,6 @@ adminRouter.delete('/delete-bill/:id', adminController.deleteBill)
 
 adminRouter.get('/get-bill/:id', adminController.getBillById)
 
-//admminRouter.get('/')
+adminRouter.get('/get-all-audio', adminController.getAllAudio)
 
 export default adminRouter

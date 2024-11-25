@@ -220,4 +220,6 @@ const getBillById = async (req, res, next) => {
         });
     }
 };
-exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById };
+const getAllAudio = async (req, res, next) => {
+};
+exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById, getAllAudio };

@@ -7,7 +7,7 @@ const ExtraSchema = new mongoose_1.Schema({
     audio: { type: String, required: false },
     remark: { type: String, required: false },
     category: { type: String, required: false },
-    created_by: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' },
+    created_by: { type: String, required: false },
     created_at: { type: Date, default: Date.now },
 }, {
     timestamps: true

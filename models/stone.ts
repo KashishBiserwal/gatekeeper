@@ -10,7 +10,7 @@ const StoneSchema = new Schema({
     vehicle_number: { type: String, required: false },
     final_weight: { type: String, required: false },
     category: { type: String, required: false },
-    created_by: { type: Schema.Types.ObjectId, ref: 'User' },
+    created_by: { type: String, required: false },
     created_at: { type: Date, default: Date.now },
 },
     {

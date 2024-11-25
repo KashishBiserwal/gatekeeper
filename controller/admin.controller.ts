@@ -251,6 +251,10 @@ const getBillById = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 
+const getAllAudio = async (req: Request, res: Response, next: NextFunction) => {
+
+};
 
 
-export default { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById };
+
+export default { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById, getAllAudio };
