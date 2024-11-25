@@ -49,33 +49,42 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 // edit user by id, name, mobile, password
 
 const editUser = async (req: Request, res: Response, next: NextFunction) => {
-
     try {
         const { userId } = req.params;
         const { name, mobile, password } = req.body;
+
+        // Validate input
+        if (!userId) {
+            return res.status(400).json({ status: 400, message: 'User ID is required' });
+        }
+
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ status: 404, message: 'User not found' });
         }
 
-        if (name) {
-            user.name = name;
-        }
-        if (mobile) {
-            user.phone = mobile;
-        }
-        if (password) {
-            const hashedPassword = await bcrypt.hash(password, 10)
-            user.password = hashedPassword;
-        }
+        // Update user fields
+        if (name) user.name = name;
+        if (mobile) user.phone = mobile;
+        if (password) user.password = await bcrypt.hash(password, 10);
 
+        // Save changes
         const updatedUser = await user.save();
-        res.status(200).json({ status: 200, message: 'User updated successfully', user: updatedUser });
-    } catch (error) {
-        return next(error);
-    }
 
-}
+        // Remove sensitive fields before sending response
+        const { password: _, ...userWithoutPassword } = updatedUser.toObject();
+
+        res.status(200).json({
+            status: 200,
+            message: 'User updated successfully',
+            user: userWithoutPassword,
+        });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        next(error); // Forward error to the global error handler
+    }
+};
+
 
 
 
