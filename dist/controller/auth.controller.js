@@ -115,5 +115,41 @@ const resetPassword = async (req, res, next) => {
         return res.status(500).send({ status: 500, message: 'Error resetting password' });
     }
 };
-const authController = { signUp, login, updatePassword, resetPassword };
+// admin login
+const adminLogin = async (req, res, next) => {
+    const isValidPayload = helpers_1.default.isValidatePaylod(req.body, ['employeeId', 'password']);
+    if (!isValidPayload) {
+        return res.status(400).send({ error: "Invalid payload", error_message: "phone, password are required" });
+    }
+    const { employeeId, password } = req.body;
+    try {
+        const user = await user_1.User.findOne({ employeeId, role: 'admin' });
+        if (!user)
+            return res.status(400).send({ message: "User doesn't exist" });
+        const isCorrectPassword = bcrypt_1.default.compareSync(password, user.password);
+        if (!isCorrectPassword) {
+            return res.status(400).send({ status: 400, message: "Incorrect Password" });
+        }
+        const token = jsonwebtoken_1.default.sign({ employeeId: user.employeeId }, process.env.JWT_SECRET, {
+            expiresIn: '7d'
+        });
+        await user.save();
+        const receiverToken = await (0, __1.getUserToken)(user.id);
+        console.log('Receiver Token:', receiverToken);
+        if (!receiverToken) {
+            console.log('Receiver not found or has no registration token', user.id);
+        }
+        else {
+            const payload = {
+                title: 'Welcome',
+                body: `Welcome to Frek App, ${user.name}!`
+            };
+        }
+        return res.status(200).send({ status: 200, message: "Logged in successfully", user, token });
+    }
+    catch (err) {
+        return res.status(500).send({ error: 'Error while Login' });
+    }
+};
+const authController = { signUp, login, updatePassword, resetPassword, adminLogin };
 exports.default = authController;
