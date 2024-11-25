@@ -34,13 +34,13 @@ const AuthMiddleware = async (req: ExtendedRequest, res: Response, next: NextFun
         return next(err)
     }
 
-    const phone: string = decryptedToken?.phone
-    
-    if (!phone) {
+    const employeeId: string = decryptedToken?.employeeId
+
+    if (!employeeId) {
         const err = new Error("Error: token doens't contain phone")
         return next(err)
     }
-    const user = await User.findOne({ phone })
+    const user = await User.findOne({ employeeId })
     if (!user) {
         return res.status(200).send({ status: 400, error: 'user not found.', error_description: 'Account had closed.' })
     }

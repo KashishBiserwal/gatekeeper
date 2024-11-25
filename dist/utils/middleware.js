@@ -29,12 +29,12 @@ const AuthMiddleware = async (req, res, next) => {
     catch (err) {
         return next(err);
     }
-    const phone = decryptedToken?.phone;
-    if (!phone) {
+    const employeeId = decryptedToken?.employeeId;
+    if (!employeeId) {
         const err = new Error("Error: token doens't contain phone");
         return next(err);
     }
-    const user = await user_1.User.findOne({ phone });
+    const user = await user_1.User.findOne({ employeeId });
     if (!user) {
         return res.status(200).send({ status: 400, error: 'user not found.', error_description: 'Account had closed.' });
     }
