@@ -5,10 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
 const material_1 = require("../models/material");
-const billing_1 = require("../models/billing");
+const bscBilling_1 = require("../models/bscBilling");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const extra_1 = require("../models/extra");
 const stone_1 = require("../models/stone");
+const srscBilling_1 = require("../models/srscBilling");
+const sscBilling_1 = require("../models/sscBilling");
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await user_1.User.find({ role: { $ne: 'admin' } }).select('-password');
@@ -97,22 +99,27 @@ const getUserById = async (req, res, next) => {
     }
 };
 //post
-const setBills = async (req, res, next) => {
+const setBillsBsc = async (req, res, next) => {
     try {
+        // Log the request body to debug issues;
+        // console.log("Request body:", req.body);
         // Extract form data from the request body
-        const { name, rstno, vehicle_number } = req.body;
+        const { rstno, vehicle_number, category, material } = req.body;
+        // Validate required fields
+        if (!rstno || !vehicle_number || !category || !material) {
+            return res.status(400).json({
+                message: "Missing required fields. Please provide all the necessary details.",
+            });
+        }
         // Auto-generate bill number using current timestamp
         const bill_id = `BILLNO.${Date.now()}`;
-        // Validate the data (optional but recommended)
-        if (!name) {
-            return res.status(400).json({ message: "Name is required." });
-        }
         // Create a new billing document
-        const newBilling = new billing_1.Billing({
-            name,
+        const newBilling = new bscBilling_1.BSCBilling({
             rstno,
             vehicle_number,
             bill_id,
+            category,
+            material
         });
         // Save the document to the database
         const savedBilling = await newBilling.save();
@@ -131,82 +138,263 @@ const setBills = async (req, res, next) => {
         });
     }
 };
-// get
-const getBills = async (req, res, next) => {
+// reset BSC counter
+const resetBscCounter = async (req, res, next) => {
     try {
-        const { id } = req.query; // Optional query parameter for a specific record
-        if (id) {
-            // Retrieve a specific billing record by ID
-            const bill = await billing_1.Billing.findById(id);
-            if (!bill) {
-                return res.status(404).json({ message: "Billing record not found." });
-            }
-            return res.status(200).json({ data: bill });
-        }
-        // Retrieve all billing records
-        const bills = await billing_1.Billing.find();
-        res.status(200).json({ data: bills });
-    }
-    catch (error) {
-        console.error("Error retrieving billing records:", error);
-        res.status(500).json({
-            message: "An error occurred while retrieving billing records.",
-            error: error,
-        });
-    }
-};
-//edit
-const editBill = async (req, res, next) => {
-    try {
-        const { id } = req.params; // ID from route parameter
-        const { name, rstno, vehicle_number } = req.body;
-        // Find the billing record by ID and update it
-        const updatedBill = await billing_1.Billing.findByIdAndUpdate(id, { name, rstno, vehicle_number }, { new: true, runValidators: true } // Return updated document and validate fields
-        );
-        if (!updatedBill) {
-            return res.status(404).json({ message: "Billing record not found." });
-        }
+        // Update all documents in the BSCBilling collection, setting counter to 0
+        const result = await bscBilling_1.BSCBilling.updateMany({}, { $set: { counter: 0 } });
+        // Respond with the result of the update operation
         res.status(200).json({
-            message: "Billing record updated successfully.",
-            data: updatedBill,
+            message: "All counters have been reset to 0.",
+            modifiedCount: result.modifiedCount,
         });
     }
     catch (error) {
-        console.error("Error updating billing record:", error);
+        console.error("Error resetting counters:", error);
         res.status(500).json({
-            message: "An error occurred while updating the billing record.",
+            message: "An error occurred while resetting the counters.",
             error: error,
         });
     }
 };
-// delete
-const deleteBill = async (req, res, next) => {
+// set srsc billing
+const setBillsSrsc = async (req, res, next) => {
     try {
-        const { id } = req.params; // ID from route parameter
-        // Find the billing record by ID and delete it
-        const deletedBill = await billing_1.Billing.findByIdAndDelete(id);
-        if (!deletedBill) {
-            return res.status(404).json({ message: "Billing record not found." });
+        // Log the request body to debug issues;
+        // console.log("Request body:", req.body);
+        // Extract form data from the request body
+        const { rstno, vehicle_number, category, material } = req.body;
+        // Validate required fields
+        if (!rstno || !vehicle_number || !category || !material) {
+            return res.status(400).json({
+                message: "Missing required fields. Please provide all the necessary details.",
+            });
         }
-        res.status(200).json({
-            message: "Billing record deleted successfully.",
-            data: deletedBill,
+        // Auto-generate bill number using current timestamp
+        const bill_id = `BILLNO.${Date.now()}`;
+        // Create a new billing document
+        const newBilling = new srscBilling_1.SRSCBilling({
+            rstno,
+            vehicle_number,
+            bill_id,
+            category,
+            material
+        });
+        // Save the document to the database
+        const savedBilling = await newBilling.save();
+        // Return the saved document as a response
+        res.status(201).json({
+            message: "Billing record created successfully.",
+            data: savedBilling,
         });
     }
     catch (error) {
-        console.error("Error deleting billing record:", error);
+        // Handle errors
+        console.error("Error creating billing record:", error);
         res.status(500).json({
-            message: "An error occurred while deleting the billing record.",
+            message: "An error occurred while creating the billing record.",
             error: error,
         });
     }
 };
-// get by id
-const getBillById = async (req, res, next) => {
+// get srsc by id
+const getBillByIdSrsc = async (req, res, next) => {
     try {
         const { id } = req.params; // Extract ID from route parameters
         // Find the billing record by ID
-        const bill = await billing_1.Billing.findById(id);
+        const bill = await srscBilling_1.SRSCBilling.findById(id);
+        if (!bill) {
+            return res.status(404).json({ message: "Billing record not found." });
+        }
+        res.status(200).json({
+            message: "Billing record retrieved successfully.",
+            data: bill,
+        });
+    }
+    catch (error) {
+        console.error("Error retrieving billing record:", error);
+        res.status(500).json({
+            message: "An error occurred while retrieving the billing record.",
+            error: error,
+        });
+    }
+};
+// reset srsc counter
+const resetSrscCounter = async (req, res, next) => {
+    try {
+        // Update all documents in the SRSCBilling collection, setting counter to 0
+        const result = await srscBilling_1.SRSCBilling.updateMany({}, { $set: { counter: 0 } });
+        // Respond with the result of the update operation
+        res.status(200).json({
+            message: "All counters have been reset to 0.",
+            modifiedCount: result.modifiedCount,
+        });
+    }
+    catch (error) {
+        console.error("Error resetting counters:", error);
+        res.status(500).json({
+            message: "An error occurred while resetting the counters.",
+            error: error,
+        });
+    }
+};
+// set ssc billing
+const setBillsSsc = async (req, res, next) => {
+    try {
+        // Log the request body to debug issues;
+        // console.log("Request body:", req.body);
+        // Extract form data from the request body
+        const { rstno, vehicle_number, category, material } = req.body;
+        // Validate required fields
+        if (!rstno || !vehicle_number || !category || !material) {
+            return res.status(400).json({
+                message: "Missing required fields. Please provide all the necessary details.",
+            });
+        }
+        // Auto-generate bill number using current timestamp
+        const bill_id = `BILLNO.${Date.now()}`;
+        // Create a new billing document
+        const newBilling = new sscBilling_1.SSCBilling({
+            rstno,
+            vehicle_number,
+            bill_id,
+            category,
+            material
+        });
+        // Save the document to the database
+        const savedBilling = await newBilling.save();
+        // Return the saved document as a response
+        res.status(201).json({
+            message: "Billing record created successfully.",
+            data: savedBilling,
+        });
+    }
+    catch (error) {
+        // Handle errors
+        console.error("Error creating billing record:", error);
+        res.status(500).json({
+            message: "An error occurred while creating the billing record.",
+            error: error,
+        });
+    }
+};
+// get ssc by id
+const getBillByIdSsc = async (req, res, next) => {
+    try {
+        const { id } = req.params; // Extract ID from route parameters
+        // Find the billing record by ID
+        const bill = await sscBilling_1.SSCBilling.findById(id);
+        if (!bill) {
+            return res.status(404).json({ message: "Billing record not found." });
+        }
+        res.status(200).json({
+            message: "Billing record retrieved successfully.",
+            data: bill,
+        });
+    }
+    catch (error) {
+        console.error("Error retrieving billing record:", error);
+        res.status(500).json({
+            message: "An error occurred while retrieving the billing record.",
+            error: error,
+        });
+    }
+};
+// reset ssc counter
+const resetSscCounter = async (req, res, next) => {
+    try {
+        // Update all documents in the SSCBilling collection, setting counter to 0
+        const result = await sscBilling_1.SSCBilling.updateMany({}, { $set: { counter: 0 } });
+        // Respond with the result of the update operation
+        res.status(200).json({
+            message: "All counters have been reset to 0.",
+            modifiedCount: result.modifiedCount,
+        });
+    }
+    catch (error) {
+        console.error("Error resetting counters:", error);
+        res.status(500).json({
+            message: "An error occurred while resetting the counters.",
+            error: error,
+        });
+    }
+};
+// get
+// const getBills = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const { id } = req.query; // Optional query parameter for a specific record
+//         if (id) {
+//             // Retrieve a specific billing record by ID
+//             const bill = await Billing.findById(id);
+//             if (!bill) {
+//                 return res.status(404).json({ message: "Billing record not found." });
+//             }
+//             return res.status(200).json({ data: bill });
+//         }
+//         // Retrieve all billing records
+//         const bills = await Billing.find();
+//         res.status(200).json({ data: bills });
+//     } catch (error) {
+//         console.error("Error retrieving billing records:", error);
+//         res.status(500).json({
+//             message: "An error occurred while retrieving billing records.",
+//             error: error,
+//         });
+//     }
+// };
+//edit
+// const editBill = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const { id } = req.params; // ID from route parameter
+//         const { name, rstno, vehicle_number } = req.body;
+//         // Find the billing record by ID and update it
+//         const updatedBill = await Billing.findByIdAndUpdate(
+//             id,
+//             { name, rstno, vehicle_number },
+//             { new: true, runValidators: true } // Return updated document and validate fields
+//         );
+//         if (!updatedBill) {
+//             return res.status(404).json({ message: "Billing record not found." });
+//         }
+//         res.status(200).json({
+//             message: "Billing record updated successfully.",
+//             data: updatedBill,
+//         });
+//     } catch (error) {
+//         console.error("Error updating billing record:", error);
+//         res.status(500).json({
+//             message: "An error occurred while updating the billing record.",
+//             error: error,
+//         });
+//     }
+// };
+// delete
+// const deleteBill = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const { id } = req.params; // ID from route parameter
+//         // Find the billing record by ID and delete it
+//         const deletedBill = await Billing.findByIdAndDelete(id);
+//         if (!deletedBill) {
+//             return res.status(404).json({ message: "Billing record not found." });
+//         }
+//         res.status(200).json({
+//             message: "Billing record deleted successfully.",
+//             data: deletedBill,
+//         });
+//     } catch (error) {
+//         console.error("Error deleting billing record:", error);
+//         res.status(500).json({
+//             message: "An error occurred while deleting the billing record.",
+//             error: error,
+//         });
+//     }
+// };
+// get by id
+const getBillByIdBsc = async (req, res, next) => {
+    try {
+        const { id } = req.params; // Extract ID from route parameters
+        // Find the billing record by ID
+        const bill = await bscBilling_1.BSCBilling.findById(id);
         if (!bill) {
             return res.status(404).json({ message: "Billing record not found." });
         }
@@ -314,4 +502,4 @@ const deleteOldExtras = async (req, res, next) => {
         });
     }
 };
-exports.default = { getAllUsers, switchUser, setBills, getBills, editBill, deleteBill, getBillById, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras };
+exports.default = { getAllUsers, switchUser, setBillsBsc, getBillByIdBsc, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras, resetBscCounter, setBillsSrsc, getBillByIdSrsc, resetSrscCounter, setBillsSsc, resetSscCounter, getBillByIdSsc };

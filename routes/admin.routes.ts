@@ -13,15 +13,36 @@ adminRouter.get('/get-user/:userId', adminController.getUserById)
 //@ts-ignore
 adminRouter.put('/switch/:userId', adminController.switchUser)
 
-adminRouter.post('/set-bills', adminController.setBills)
 
-adminRouter.get('/get-bills', adminController.getBills)
 
-adminRouter.put('/edit-bill/:id', adminController.editBill)
 
-adminRouter.delete('/delete-bill/:id', adminController.deleteBill)
+adminRouter.post('/set-bills-bsc', adminController.setBillsBsc)
 
-adminRouter.get('/get-bill/:id', adminController.getBillById)
+adminRouter.get('/get-bill-bsc/:id', adminController.getBillByIdBsc)
+
+adminRouter.put('/reset-bsc-counter', adminController.resetBscCounter)
+
+
+adminRouter.post('/set-bills-srsc', adminController.setBillsSrsc)
+
+adminRouter.get('/get-bill-srsc/:id', adminController.getBillByIdSrsc)
+
+adminRouter.put('/reset-srsc-counter', adminController.resetSrscCounter)
+
+
+adminRouter.post('/set-bills-ssc', adminController.setBillsSsc)
+
+adminRouter.get('/get-bill-ssc/:id', adminController.getBillByIdSsc)
+
+adminRouter.put('/reset-ssc-counter', adminController.resetSscCounter)
+
+// adminRouter.get('/get-bills', adminController.getBills)
+
+// adminRouter.put('/edit-bill/:id', adminController.editBill)
+
+// adminRouter.delete('/delete-bill/:id', adminController.deleteBill)
+
+
 
 adminRouter.get('/get-all-audio', adminController.getAllAudio)
 

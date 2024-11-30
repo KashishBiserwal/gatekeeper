@@ -13,11 +13,18 @@ adminRouter.put('/edit-user/:userId', admin_controller_1.default.editUser);
 adminRouter.get('/get-user/:userId', admin_controller_1.default.getUserById);
 //@ts-ignore
 adminRouter.put('/switch/:userId', admin_controller_1.default.switchUser);
-adminRouter.post('/set-bills', admin_controller_1.default.setBills);
-adminRouter.get('/get-bills', admin_controller_1.default.getBills);
-adminRouter.put('/edit-bill/:id', admin_controller_1.default.editBill);
-adminRouter.delete('/delete-bill/:id', admin_controller_1.default.deleteBill);
-adminRouter.get('/get-bill/:id', admin_controller_1.default.getBillById);
+adminRouter.post('/set-bills-bsc', admin_controller_1.default.setBillsBsc);
+adminRouter.get('/get-bill-bsc/:id', admin_controller_1.default.getBillByIdBsc);
+adminRouter.put('/reset-bsc-counter', admin_controller_1.default.resetBscCounter);
+adminRouter.post('/set-bills-srsc', admin_controller_1.default.setBillsSrsc);
+adminRouter.get('/get-bill-srsc/:id', admin_controller_1.default.getBillByIdSrsc);
+adminRouter.put('/reset-srsc-counter', admin_controller_1.default.resetSrscCounter);
+adminRouter.post('/set-bills-ssc', admin_controller_1.default.setBillsSsc);
+adminRouter.get('/get-bill-ssc/:id', admin_controller_1.default.getBillByIdSsc);
+adminRouter.put('/reset-ssc-counter', admin_controller_1.default.resetSscCounter);
+// adminRouter.get('/get-bills', adminController.getBills)
+// adminRouter.put('/edit-bill/:id', adminController.editBill)
+// adminRouter.delete('/delete-bill/:id', adminController.deleteBill)
 adminRouter.get('/get-all-audio', admin_controller_1.default.getAllAudio);
 adminRouter.delete('/delete-old-materials', admin_controller_1.default.deleteOldMaterials);
 adminRouter.delete('/delete-old-stones', admin_controller_1.default.deleteOldStones);
