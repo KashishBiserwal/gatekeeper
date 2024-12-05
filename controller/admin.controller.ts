@@ -172,6 +172,89 @@ const resetBscCounter = async (req: Request, res: Response, next: NextFunction) 
     }
 };
 
+const getBscBillCounter = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const lastDoc = await BSCBilling.findOne().sort({ createdAt: -1 });
+        const count = await lastDoc.counter;
+
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error("Error getting BSC billing count:", error);
+        res.status(500).json({
+            message: "An error occurred while getting the BSC billing count.",
+            error: error,
+        });
+    }
+} 
+
+const getBscBills = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const bills = await BSCBilling.find();
+        res.status(200).json({bills});
+    }catch(error){
+        console.error("Error getting BSC bills:", error);
+        res.status(500).json({
+            message: "An error occurred while getting the BSC bills.",
+            error: error,
+        });
+    }
+}
+
+const getSrscBills = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const bills = await SRSCBilling.find();
+        res.status(200).json({bills});
+    }catch(error){
+        console.error("Error getting SRSC bills:", error);
+        res.status(500).json({
+            message: "An error occurred while getting the SRSC bills.",
+            error: error,
+        });
+    }
+}
+
+const getSscBills = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const bills = await SSCBilling.find();
+        res.status(200).json({bills});
+    }catch(error){
+        console.error("Error getting SSC bills:", error);
+        res.status(500).json({
+            message: "An error occurred while getting the SSC bills.",
+            error: error,
+        });
+    }
+}
+
+const getSrscBillCounter = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const lastDoc = await SRSCBilling.findOne().sort({ createdAt: -1 });
+        const count = await lastDoc.counter;
+
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error("Error getting SRSC billing count:", error);
+        res.status(500).json({
+            message: "An error occurred while getting the SRSC billing count.",
+            error: error,
+        });
+    }
+}
+
+const getSscBillCounter = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const lastDoc = await SSCBilling.findOne().sort({ createdAt: -1 });
+        const count = await lastDoc.counter;
+
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error("Error getting SSC billing count:", error);
+        res.status(500).json({
+            message: "An error occurred while getting the SSC billing count.",
+            error: error,
+        });
+    }
+}
 
 
 // set srsc billing
@@ -586,4 +669,4 @@ const deleteOldExtras = async (req: Request, res: Response, next: NextFunction) 
 
 
 
-export default { getAllUsers, switchUser, setBillsBsc, getBillByIdBsc, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras, resetBscCounter, setBillsSrsc, getBillByIdSrsc, resetSrscCounter, setBillsSsc, resetSscCounter, getBillByIdSsc };
+export default { getAllUsers, switchUser, setBillsBsc, getBillByIdBsc, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras, resetBscCounter, setBillsSrsc, getBillByIdSrsc, resetSrscCounter, setBillsSsc, resetSscCounter, getBillByIdSsc, getSrscBillCounter, getSscBillCounter, getBscBillCounter, getBscBills, getSrscBills, getSscBills };

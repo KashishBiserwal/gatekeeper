@@ -22,6 +22,12 @@ adminRouter.put('/reset-srsc-counter', admin_controller_1.default.resetSrscCount
 adminRouter.post('/set-bills-ssc', admin_controller_1.default.setBillsSsc);
 adminRouter.get('/get-bill-ssc/:id', admin_controller_1.default.getBillByIdSsc);
 adminRouter.put('/reset-ssc-counter', admin_controller_1.default.resetSscCounter);
+adminRouter.get('/bsc-bill-count', admin_controller_1.default.getBscBillCounter);
+adminRouter.get('/srsc-bill-count', admin_controller_1.default.getSrscBillCounter);
+adminRouter.get('/ssc-bill-count', admin_controller_1.default.getSscBillCounter);
+adminRouter.get('/bsc-bill', admin_controller_1.default.getBscBills);
+adminRouter.get('/srsc-bill', admin_controller_1.default.getSrscBills);
+adminRouter.get('/ssc-bill', admin_controller_1.default.getSscBills);
 // adminRouter.get('/get-bills', adminController.getBills)
 // adminRouter.put('/edit-bill/:id', adminController.editBill)
 // adminRouter.delete('/delete-bill/:id', adminController.deleteBill)
