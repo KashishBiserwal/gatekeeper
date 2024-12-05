@@ -28,9 +28,9 @@ adminRouter.get('/ssc-bill-count', admin_controller_1.default.getSscBillCounter)
 adminRouter.get('/bsc-bill', admin_controller_1.default.getBscBills);
 adminRouter.get('/srsc-bill', admin_controller_1.default.getSrscBills);
 adminRouter.get('/ssc-bill', admin_controller_1.default.getSscBills);
-adminRouter.delete('/delete-bsc/:id', admin_controller_1.default.deleteBscBillByBillId);
-adminRouter.delete('/delete-srsc/:id', admin_controller_1.default.deleteSrscBillByBillId);
-adminRouter.delete('/delete-ssc/:id', admin_controller_1.default.deleteSscBillByBillId);
+adminRouter.put('/bsc/delete/bill/', admin_controller_1.default.deleteBscBillByBillId);
+adminRouter.put('/srsc/delete/bill/', admin_controller_1.default.deleteSrscBillByBillId);
+adminRouter.put('/ssc/delete/bill/', admin_controller_1.default.deleteSscBillByBillId);
 // adminRouter.get('/get-bills', adminController.getBills)
 // adminRouter.put('/edit-bill/:id', adminController.editBill)
 // adminRouter.delete('/delete-bill/:id', adminController.deleteBill)

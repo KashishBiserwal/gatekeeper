@@ -585,11 +585,12 @@ const deleteOldExtras = async (req, res, next) => {
 };
 const deleteBscBillByBillId = async (req, res, next) => {
     try {
-        const { billId } = req.params;
-        const bill = await bscBilling_1.BSCBilling.findOneAndDelete({ bill_id: billId });
+        const { id } = req.body;
+        const bill = await bscBilling_1.BSCBilling.findById(id);
         if (!bill) {
-            return res.status(404).json({ status: 404, message: 'Billing record not found' });
+            return res.status(404).json({ message: "Billing record not found." });
         }
+        await bscBilling_1.BSCBilling.findByIdAndDelete(id);
         res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
     }
     catch (error) {
@@ -598,11 +599,12 @@ const deleteBscBillByBillId = async (req, res, next) => {
 };
 const deleteSrscBillByBillId = async (req, res, next) => {
     try {
-        const { billId } = req.params;
-        const bill = await srscBilling_1.SRSCBilling.findOneAndDelete({ bill_id: billId });
+        const { id } = req.body;
+        const bill = await srscBilling_1.SRSCBilling.findById(id);
         if (!bill) {
-            return res.status(404).json({ status: 404, message: 'Billing record not found' });
+            return res.status(404).json({ message: "Billing record not found." });
         }
+        await srscBilling_1.SRSCBilling.findByIdAndDelete(id);
         res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
     }
     catch (error) {
@@ -611,11 +613,12 @@ const deleteSrscBillByBillId = async (req, res, next) => {
 };
 const deleteSscBillByBillId = async (req, res, next) => {
     try {
-        const { billId } = req.params;
-        const bill = await sscBilling_1.SSCBilling.findOneAndDelete({ bill_id: billId });
+        const { id } = req.body;
+        const bill = await sscBilling_1.SSCBilling.findById(id);
         if (!bill) {
-            return res.status(404).json({ status: 404, message: 'Billing record not found' });
+            return res.status(404).json({ message: "Billing record not found." });
         }
+        await sscBilling_1.SSCBilling.findByIdAndDelete(id);
         res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
     }
     catch (error) {
