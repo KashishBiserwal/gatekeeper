@@ -667,6 +667,43 @@ const deleteOldExtras = async (req: Request, res: Response, next: NextFunction) 
 
 
 
+const deleteBscBillByBillId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { billId } = req.params;
+        const bill = await BSCBilling.findOneAndDelete({ bill_id: billId });
+        if (!bill) {
+            return res.status(404).json({ status: 404, message: 'Billing record not found' });
+        }
+        res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
+        } catch (error) {
+        next(error);
+    }
+}
 
+const deleteSrscBillByBillId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { billId } = req.params;
+        const bill = await SRSCBilling.findOneAndDelete({ bill_id: billId });   
+        if (!bill) {
+            return res.status(404).json({ status: 404, message: 'Billing record not found' });
+        }
+        res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
+        } catch (error) {
+        next(error);
+    }
+}
 
-export default { getAllUsers, switchUser, setBillsBsc, getBillByIdBsc, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras, resetBscCounter, setBillsSrsc, getBillByIdSrsc, resetSrscCounter, setBillsSsc, resetSscCounter, getBillByIdSsc, getSrscBillCounter, getSscBillCounter, getBscBillCounter, getBscBills, getSrscBills, getSscBills };
+const deleteSscBillByBillId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { billId } = req.params;
+        const bill = await SSCBilling.findOneAndDelete({ bill_id: billId });
+        if (!bill) {
+            return res.status(404).json({ status: 404, message: 'Billing record not found' });
+        }
+        res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
+        } catch (error) {
+        next(error);
+    }
+}
+
+export default { getAllUsers, switchUser, setBillsBsc, getBillByIdBsc, deleteUser, editUser, getUserById, getAllAudio, deleteOldMaterials, deleteOldStones, deleteOldExtras, resetBscCounter, setBillsSrsc, getBillByIdSrsc, resetSrscCounter, setBillsSsc, resetSscCounter, getBillByIdSsc, getSrscBillCounter, getSscBillCounter, getBscBillCounter, getBscBills, getSrscBills, getSscBills, deleteBscBillByBillId, deleteSrscBillByBillId, deleteSscBillByBillId };

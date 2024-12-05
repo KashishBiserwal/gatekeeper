@@ -48,6 +48,12 @@ adminRouter.get('/srsc-bill', adminController.getSrscBills)
 
 adminRouter.get('/ssc-bill', adminController.getSscBills)   
 
+adminRouter.delete('/delete-bsc/:id', adminController.deleteBscBillByBillId)
+
+adminRouter.delete('/delete-srsc/:id', adminController.deleteSrscBillByBillId)
+
+adminRouter.delete('/delete-ssc/:id', adminController.deleteSscBillByBillId)
+
 // adminRouter.get('/get-bills', adminController.getBills)
 
 // adminRouter.put('/edit-bill/:id', adminController.editBill)
