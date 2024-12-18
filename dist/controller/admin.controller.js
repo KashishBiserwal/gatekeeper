@@ -142,18 +142,18 @@ const setBillsBsc = async (req, res, next) => {
 // reset BSC counter
 const resetBscCounter = async (req, res, next) => {
     try {
-        // Update all documents in the BSCBilling collection, setting counter to 0
-        const result = await bscBilling_1.BSCBilling.updateMany({}, { $set: { counter: 0 } });
+        // Update all documents in the BSCBilling collection, setting counter and status to 0
+        const result = await bscBilling_1.BSCBilling.updateMany({}, { $set: { counter: 0, status: 0 } });
         // Respond with the result of the update operation
         res.status(200).json({
-            message: "All counters have been reset to 0.",
+            message: "All counters and statuses have been reset to 0.",
             modifiedCount: result.modifiedCount,
         });
     }
     catch (error) {
-        console.error("Error resetting counters:", error);
+        console.error("Error resetting counters and statuses:", error);
         res.status(500).json({
-            message: "An error occurred while resetting the counters.",
+            message: "An error occurred while resetting the counters and statuses.",
             error: error,
         });
     }
@@ -306,7 +306,7 @@ const getBillByIdSrsc = async (req, res, next) => {
 const resetSrscCounter = async (req, res, next) => {
     try {
         // Update all documents in the SRSCBilling collection, setting counter to 0
-        const result = await srscBilling_1.SRSCBilling.updateMany({}, { $set: { counter: 0 } });
+        const result = await srscBilling_1.SRSCBilling.updateMany({}, { $set: { counter: 0, status: 0 } });
         // Respond with the result of the update operation
         res.status(200).json({
             message: "All counters have been reset to 0.",
@@ -388,10 +388,10 @@ const getBillByIdSsc = async (req, res, next) => {
 const resetSscCounter = async (req, res, next) => {
     try {
         // Update all documents in the SSCBilling collection, setting counter to 0
-        const result = await sscBilling_1.SSCBilling.updateMany({}, { $set: { counter: 0 } });
+        const result = await sscBilling_1.SSCBilling.updateMany({}, { $set: { counter: 0, status: 0 } });
         // Respond with the result of the update operation
         res.status(200).json({
-            message: "All counters have been reset to 0.",
+            message: "All counters & status have been reset to 0.",
             modifiedCount: result.modifiedCount,
         });
     }

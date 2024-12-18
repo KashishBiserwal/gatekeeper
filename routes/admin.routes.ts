@@ -36,6 +36,9 @@ adminRouter.get('/get-bill-ssc/:id', adminController.getBillByIdSsc)
 
 adminRouter.put('/reset-ssc-counter', adminController.resetSscCounter)
 
+
+
+
 adminRouter.get('/bsc-bill-count', adminController.getBscBillCounter)
 
 adminRouter.get('/srsc-bill-count', adminController.getSrscBillCounter)
@@ -46,7 +49,7 @@ adminRouter.get('/bsc-bill', adminController.getBscBills)
 
 adminRouter.get('/srsc-bill', adminController.getSrscBills)
 
-adminRouter.get('/ssc-bill', adminController.getSscBills)   
+adminRouter.get('/ssc-bill', adminController.getSscBills)
 
 adminRouter.put('/bsc/delete/bill/', adminController.deleteBscBillByBillId)
 
