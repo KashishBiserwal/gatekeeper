@@ -7,7 +7,8 @@ const sscBillingSchema = new Schema(
         vehicle_number: { type: String },
         category: { type: String },
         bill_id: { type: String },
-        material: { type: String }, // Corrected key spelling
+        material: { type: String },
+        status: { type: Number },
     },
     { timestamps: true }
 );

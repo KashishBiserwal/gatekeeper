@@ -112,10 +112,10 @@ const setBillsBsc = async (req: Request, res: Response, next: NextFunction) => {
         // console.log("Request body:", req.body);
 
         // Extract form data from the request body
-        const { rstno, vehicle_number, category, material } = req.body;
+        const { rstno, vehicle_number, category, material, status } = req.body;
 
         // Validate required fields
-        if (!rstno || !vehicle_number || !category || !material) {
+        if (!rstno || !vehicle_number || !category || !material || !status) {
             return res.status(400).json({
                 message: "Missing required fields. Please provide all the necessary details.",
             });
@@ -130,7 +130,8 @@ const setBillsBsc = async (req: Request, res: Response, next: NextFunction) => {
             vehicle_number,
             bill_id,
             category,
-            material
+            material,
+            status
         });
 
         // Save the document to the database
@@ -185,13 +186,13 @@ const getBscBillCounter = async (req: Request, res: Response, next: NextFunction
             error: error,
         });
     }
-} 
+}
 
 const getBscBills = async (req: Request, res: Response, next: NextFunction) => {
-    try{
+    try {
         const bills = await BSCBilling.find();
-        res.status(200).json({bills});
-    }catch(error){
+        res.status(200).json({ bills });
+    } catch (error) {
         console.error("Error getting BSC bills:", error);
         res.status(500).json({
             message: "An error occurred while getting the BSC bills.",
@@ -201,10 +202,10 @@ const getBscBills = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const getSrscBills = async (req: Request, res: Response, next: NextFunction) => {
-    try{
+    try {
         const bills = await SRSCBilling.find();
-        res.status(200).json({bills});
-    }catch(error){
+        res.status(200).json({ bills });
+    } catch (error) {
         console.error("Error getting SRSC bills:", error);
         res.status(500).json({
             message: "An error occurred while getting the SRSC bills.",
@@ -214,10 +215,10 @@ const getSrscBills = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 const getSscBills = async (req: Request, res: Response, next: NextFunction) => {
-    try{
+    try {
         const bills = await SSCBilling.find();
-        res.status(200).json({bills});
-    }catch(error){
+        res.status(200).json({ bills });
+    } catch (error) {
         console.error("Error getting SSC bills:", error);
         res.status(500).json({
             message: "An error occurred while getting the SSC bills.",
@@ -265,10 +266,10 @@ const setBillsSrsc = async (req: Request, res: Response, next: NextFunction) => 
         // console.log("Request body:", req.body);
 
         // Extract form data from the request body
-        const { rstno, vehicle_number, category, material } = req.body;
+        const { rstno, vehicle_number, category, material, status } = req.body;
 
         // Validate required fields
-        if (!rstno || !vehicle_number || !category || !material) {
+        if (!rstno || !vehicle_number || !category || !material || !status) {
             return res.status(400).json({
                 message: "Missing required fields. Please provide all the necessary details.",
             });
@@ -283,7 +284,8 @@ const setBillsSrsc = async (req: Request, res: Response, next: NextFunction) => 
             vehicle_number,
             bill_id,
             category,
-            material
+            material,
+            status
         });
 
         // Save the document to the database
@@ -360,10 +362,10 @@ const setBillsSsc = async (req: Request, res: Response, next: NextFunction) => {
         // console.log("Request body:", req.body);
 
         // Extract form data from the request body
-        const { rstno, vehicle_number, category, material } = req.body;
+        const { rstno, vehicle_number, category, material, status } = req.body;
 
         // Validate required fields
-        if (!rstno || !vehicle_number || !category || !material) {
+        if (!rstno || !vehicle_number || !category || !material || !status) {
             return res.status(400).json({
                 message: "Missing required fields. Please provide all the necessary details.",
             });
@@ -378,7 +380,8 @@ const setBillsSsc = async (req: Request, res: Response, next: NextFunction) => {
             vehicle_number,
             bill_id,
             category,
-            material
+            material,
+            status
         });
 
         // Save the document to the database
@@ -669,42 +672,42 @@ const deleteOldExtras = async (req: Request, res: Response, next: NextFunction) 
 
 const deleteBscBillByBillId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.body; 
+        const { id } = req.body;
         const bill = await BSCBilling.findById(id);
         if (!bill) {
             return res.status(404).json({ message: "Billing record not found." });
         }
         await BSCBilling.findByIdAndDelete(id);
         res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
-        } catch (error) {
+    } catch (error) {
         next(error);
     }
 }
 
 const deleteSrscBillByBillId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.body; 
+        const { id } = req.body;
         const bill = await SRSCBilling.findById(id);
         if (!bill) {
             return res.status(404).json({ message: "Billing record not found." });
         }
         await SRSCBilling.findByIdAndDelete(id);
         res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
-        } catch (error) {
+    } catch (error) {
         next(error);
     }
 }
 
 const deleteSscBillByBillId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.body; 
+        const { id } = req.body;
         const bill = await SSCBilling.findById(id);
         if (!bill) {
             return res.status(404).json({ message: "Billing record not found." });
         }
         await SSCBilling.findByIdAndDelete(id);
         res.status(200).json({ status: 200, message: 'Billing record deleted successfully' });
-        } catch (error) {
+    } catch (error) {
         next(error);
     }
 }

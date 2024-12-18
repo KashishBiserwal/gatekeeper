@@ -104,9 +104,9 @@ const setBillsBsc = async (req, res, next) => {
         // Log the request body to debug issues;
         // console.log("Request body:", req.body);
         // Extract form data from the request body
-        const { rstno, vehicle_number, category, material } = req.body;
+        const { rstno, vehicle_number, category, material, status } = req.body;
         // Validate required fields
-        if (!rstno || !vehicle_number || !category || !material) {
+        if (!rstno || !vehicle_number || !category || !material || !status) {
             return res.status(400).json({
                 message: "Missing required fields. Please provide all the necessary details.",
             });
@@ -119,7 +119,8 @@ const setBillsBsc = async (req, res, next) => {
             vehicle_number,
             bill_id,
             category,
-            material
+            material,
+            status
         });
         // Save the document to the database
         const savedBilling = await newBilling.save();
@@ -244,9 +245,9 @@ const setBillsSrsc = async (req, res, next) => {
         // Log the request body to debug issues;
         // console.log("Request body:", req.body);
         // Extract form data from the request body
-        const { rstno, vehicle_number, category, material } = req.body;
+        const { rstno, vehicle_number, category, material, status } = req.body;
         // Validate required fields
-        if (!rstno || !vehicle_number || !category || !material) {
+        if (!rstno || !vehicle_number || !category || !material || !status) {
             return res.status(400).json({
                 message: "Missing required fields. Please provide all the necessary details.",
             });
@@ -259,7 +260,8 @@ const setBillsSrsc = async (req, res, next) => {
             vehicle_number,
             bill_id,
             category,
-            material
+            material,
+            status
         });
         // Save the document to the database
         const savedBilling = await newBilling.save();
@@ -325,9 +327,9 @@ const setBillsSsc = async (req, res, next) => {
         // Log the request body to debug issues;
         // console.log("Request body:", req.body);
         // Extract form data from the request body
-        const { rstno, vehicle_number, category, material } = req.body;
+        const { rstno, vehicle_number, category, material, status } = req.body;
         // Validate required fields
-        if (!rstno || !vehicle_number || !category || !material) {
+        if (!rstno || !vehicle_number || !category || !material || !status) {
             return res.status(400).json({
                 message: "Missing required fields. Please provide all the necessary details.",
             });
@@ -340,7 +342,8 @@ const setBillsSsc = async (req, res, next) => {
             vehicle_number,
             bill_id,
             category,
-            material
+            material,
+            status
         });
         // Save the document to the database
         const savedBilling = await newBilling.save();

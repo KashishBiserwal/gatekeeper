@@ -8,7 +8,8 @@ const bscBillingSchema = new mongoose_1.Schema({
     vehicle_number: { type: String },
     category: { type: String },
     bill_id: { type: String },
-    material: { type: String }, // Corrected key spelling
+    material: { type: String },
+    status: { type: Number },
 }, { timestamps: true });
 // Auto-increment the counter field (if needed)
 bscBillingSchema.pre("save", async function (next) {
