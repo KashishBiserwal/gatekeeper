@@ -43,6 +43,45 @@ const getAudio = async (req, res, next) => {
         res.status(500).json({ error: "Failed to upload audio file" });
     }
 };
+// upload images
+const getImage = async (req, res, next) => {
+    try {
+        // Check if a file is uploaded
+        if (!req.files || !req.files.image) {
+            return res.status(400).json({ error: "No image file provided" });
+        }
+        // Extract the uploaded file
+        const imageFile = req.files.image;
+        // Validate the file type and ensure it's a single file
+        const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+        if (!imageFile ||
+            Array.isArray(imageFile) ||
+            !allowedMimeTypes.includes(imageFile.mimetype)) {
+            return res.status(400).json({ error: "Invalid image file. Allowed types: jpg, jpeg, png, webp" });
+        }
+        // Generate a unique filename
+        const uniqueName = `image_${Date.now()}${path_1.default.extname(imageFile.name)}`;
+        // Define the directory to save the file
+        const uploadDir = path_1.default.join(__dirname, "../uploads/images");
+        if (!fs_1.default.existsSync(uploadDir)) {
+            fs_1.default.mkdirSync(uploadDir, { recursive: true });
+        }
+        // Define the full path for the uploaded file
+        const uploadPath = path_1.default.join(uploadDir, uniqueName);
+        // Move the file to the upload directory
+        await imageFile.mv(uploadPath);
+        // Save the file path to the database (example logic)
+        const imageUrl = `uploads/images/${uniqueName}`;
+        // Replace with your database save logic
+        // await User.create({ imagePath: imageUrl });
+        // Return the file URL
+        res.status(200).json({ imageUrl });
+    }
+    catch (error) {
+        console.error("Error handling image file upload:", error);
+        res.status(500).json({ error: "Failed to upload image file" });
+    }
+};
 const addMaterial = async (req, res, next) => {
     const userId = req.user;
     const userName = req.user.name;
@@ -280,5 +319,5 @@ const deleteExtraById = async (req, res, next) => {
         next(error);
     }
 };
-const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById, getAudio };
+const userController = { addMaterial, addStone, addExtra, getMaterial, getStone, getExtra, getMaterialById, getStoneById, getExtraById, editMaterialById, editStoneById, editExtraById, deleteMaterialById, deleteStoneById, deleteExtraById, getAudio, getImage };
 exports.default = userController;

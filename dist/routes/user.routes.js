@@ -10,6 +10,8 @@ const userRouter = (0, express_1.Router)();
 userRouter.use((0, express_fileupload_1.default)());
 userRouter.post('/get-audio', user_controller_1.default.getAudio);
 //@ts-ignore
+userRouter.post('/upload-images', user_controller_1.default.getImage);
+//@ts-ignore
 userRouter.post('/material', user_controller_1.default.addMaterial);
 //@ts-ignore
 userRouter.post('/stone', user_controller_1.default.addStone);

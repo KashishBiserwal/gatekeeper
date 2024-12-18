@@ -7,6 +7,8 @@ userRouter.use(fileUpload());
 
 userRouter.post('/get-audio', userController.getAudio);
 //@ts-ignore
+userRouter.post('/upload-images', userController.getImage);
+//@ts-ignore
 userRouter.post('/material', userController.addMaterial)
 //@ts-ignore
 userRouter.post('/stone', userController.addStone)
